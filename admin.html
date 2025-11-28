@@ -3,342 +3,640 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin — TEFA TKJ | Voucher Manager</title>
+  <title>Dashboard Admin — TEFA TKJ Voucher</title>
   <meta name="robots" content="noindex">
   <style>
-    :root{--primary:#0b5ed7;--muted:#6b7280;--card:#fff;--bg:#f4f7fb}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial;background:var(--bg);color:#071022}
-    .wrap{max-width:1100px;margin:20px auto;padding:18px}
-    .card{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(12,12,12,0.06)}
-    .login-box{max-width:420px;margin:30px auto;padding:18px}
-    input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e8eef7}
-    button{padding:8px 12px;border-radius:8px;border:0;background:var(--primary);color:#fff;cursor:pointer}
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    th,td{padding:8px;border-bottom:1px solid #f1f5f9;text-align:left}
+    :root{
+      --primary:#0b5ed7;
+      --primary-soft:#dbeafe;
+      --accent:#f59e0b;
+      --muted:#6b7280;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --card-soft:#eef2ff;
+      --border:#e2e8f0;
+      --radius:14px;
+      --danger:#dc2626;
+      --success:#059669;
+      --shadow:0 15px 45px rgba(15,23,42,0.08);
+    }
+    [data-theme="dark"]{
+      --primary:#60a5fa;
+      --primary-soft:#1d4ed8;
+      --accent:#f59e0b;
+      --muted:#cbd5f5;
+      --bg:#020617;
+      --card:#0f172a;
+      --card-soft:#1e293b;
+      --border:#1e293b;
+      --shadow:0 18px 50px rgba(2,6,23,0.8);
+    }
+    *{box-sizing:border-box;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{margin:0;background:var(--bg);color:#020617;transition:background .3s,color .3s}
+    body[data-theme="dark"]{color:#f8fafc}
+    header{position:sticky;top:0;z-index:40;background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 5px 20px rgba(15,23,42,0.08)}
+    .nav{max-width:1200px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:44px;height:44px;border-radius:12px}
+    .brand-text{line-height:1.2}
+    .nav-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{border:none;border-radius:12px;padding:10px 16px;font-weight:600;cursor:pointer}
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+    .btn-secondary{background:var(--card-soft);color:#0f172a}
+    body[data-theme="dark"] .btn-secondary{color:#e2e8f0}
+    .btn-danger{background:var(--danger);color:#fff}
+    .toggle-theme{background:transparent;border:1px solid var(--border);border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;color:var(--muted)}
+    main{max-width:1200px;margin:0 auto;padding:30px 18px 80px}
+    .hidden{display:none!important}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .section-title{margin:0 0 10px;font-size:22px}
+    .section-desc{margin:0 0 18px;color:var(--muted);font-size:14px}
+    .hero-admin{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-bottom:30px}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:24px}
+    .stat-card .value{font-size:32px;font-weight:800;margin:6px 0}
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-bottom:24px}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:12px;border-bottom:1px solid var(--border);text-align:left}
+    th{background:var(--card-soft);color:#0f172a}
+    body[data-theme="dark"] th{color:#e2e8f0}
+    input,textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:inherit}
+    textarea{resize:vertical}
+    label{display:block;font-weight:600;margin-bottom:6px;font-size:14px}
+    .status-pill{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;display:inline-block}
+    .status-ready{background:#fef3c7;color:#92400e}
+    .status-used{background:#dcfce7;color:#166534}
+    .status-pending{background:#fef3c7;color:#92400e}
+    .status-failed{background:#fee2e2;color:#b91c1c}
+    .chart{display:flex;gap:12px;align-items:flex-end;height:180px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .bar{width:100%;background:var(--primary-soft);border-radius:12px 12px 0 0;display:flex;align-items:flex-end}
+    .bar-fill{width:100%;background:var(--primary);border-radius:12px 12px 0 0}
+    .chart-label{font-size:12px;color:var(--muted);text-align:center}
+    .issued-log{max-height:200px;overflow:auto;font-family:monospace;font-size:12px;background:var(--card-soft);padding:12px;border-radius:var(--radius)}
     .muted{color:var(--muted);font-size:13px}
-    .flex{display:flex;gap:8px;align-items:center}
-    .actions{display:flex;gap:8px}
-    .small{font-size:13px;padding:6px 8px}
-    .status-used{background:#e6ffed;color:#027a3a;padding:6px 8px;border-radius:999px}
-    .status-ready{background:#fff8e6;color:#92400e;padding:6px 8px;border-radius:999px}
-    @media (max-width:700px){.flex{flex-direction:column;align-items:stretch}}
+    @media(max-width:640px){
+      .nav{flex-direction:column;align-items:flex-start}
+      header{position:static}
+    }
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <h2>Admin Panel</h2>
-    <div class="card" style="margin-top:10px">
-      <div id="authArea" style="margin-top:10px">
-        <!-- Login form -->
-        <div id="loginBox" class="login-box card">
-          <h3>Login</h3>
-          <label>Username<input id="loginUser" type="text" placeholder="username"></label>
-          <label style="margin-top:8px">Password<input id="loginPass" type="password" placeholder="password"></label>
-          <div style="margin-top:10px;display:flex;gap:8px">
-            <button onclick="doLogin()">Masuk</button>
-            <button onclick="loadSampleVouchers()" style="background:#111;color:#fff">Isi Sample</button>
-          </div>
-          <div id="loginMsg" style="margin-top:8px;color:red"></div>
+<body data-theme="light">
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <img src="images/LogoTKJ.png" alt="TEFA TKJ">
+        <img src="images/jb.png" alt="SMK JB" style="width:40px;height:40px;border-radius:10px">
+        <div class="brand-text">
+          <strong>Dashboard Admin — TEFA TKJ</strong>
+          <div style="font-size:13px;color:var(--muted)">Manajemen voucher & transaksi UMKM</div>
         </div>
+      </div>
+      <div class="nav-actions">
+        <button class="toggle-theme" id="themeToggle">🌙 Mode Gelap</button>
+        <a class="btn btn-secondary" href="index.html">← Kembali ke Website</a>
+        <button class="btn btn-primary" onclick="doLogout()">Keluar</button>
+      </div>
+    </div>
+  </header>
 
-        <!-- Admin area hidden until login -->
-        <div id="adminArea" style="display:none">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <strong>Halo, Admin</strong>
-              <div class="muted">Kelola voucher dan keluarkan ke user langsung dari sini</div>
-            </div>
-            <div>
-              <button onclick="doLogout()" style="background:#ddd;color:#111">Keluar</button>
-            </div>
-          </div>
+  <main>
+    <section id="loginSection">
+      <div class="card" id="loginBox" style="max-width:420px;margin:0 auto">
+        <h2 class="section-title">Login Admin</h2>
+        <p class="section-desc">Masuk untuk mengelola voucher, transaksi, dan laporan.</p>
+        <label>Username
+          <input id="loginUser" type="text" placeholder="admin_tkj">
+        </label>
+        <label>Password
+          <input id="loginPass" type="password" placeholder="•••••">
+        </label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn btn-primary" onclick="doLogin()">Masuk</button>
+          <button class="btn btn-secondary" onclick="loadSampleVouchers()">Isi Sample Voucher</button>
+        </div>
+        <div id="loginMsg" style="margin-top:10px;color:var(--danger)"></div>
+      </div>
+    </section>
 
-          <hr style="margin:12px 0">
+    <section id="adminArea" class="hidden">
+      <div class="hero-admin">
+        <div class="card">
+          <h2>👋 Halo, Admin</h2>
+          <p class="muted">Pantau stok voucher, riwayat transaksi, dan kirim ulang voucher langsung dari dashboard ini.</p>
+          <div class="muted" style="margin-top:12px">Tips: selalu lakukan backup voucher sebelum melakukan impor besar.</div>
+        </div>
+        <div class="card">
+          <h3 class="section-title">Ringkasan Singkat</h3>
+          <p class="muted" style="margin-bottom:12px">Data diambil dari localStorage browser Anda.</p>
+          <ul style="margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.6">
+            <li>Voucher siap pakai: <strong id="statReady">0</strong></li>
+            <li>Voucher sudah digunakan: <strong id="statUsed">0</strong></li>
+            <li>Transaksi lunas hari ini: <strong id="statPaidToday">0</strong></li>
+          </ul>
+        </div>
+      </div>
 
-          <!-- Add voucher single -->
-          <div class="card" style="margin-top:10px">
-            <h4>Tambah Voucher (single)</h4>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <input id="v_code" placeholder="Kode (mis. TKJ-1H-AB12)">
-              <input id="v_package" placeholder="Paket (mis. Paket 1 Jam)">
-              <button onclick="addVoucher()">Tambah</button>
-            </div>
-            <div class="muted" style="margin-top:8px">Atau tambahkan banyak sekaligus (paste satu kode per baris) pada bagian import</div>
-          </div>
+      <div class="stats-grid">
+        <div class="card stat-card">
+          <div class="muted">Voucher Ready</div>
+          <div class="value" id="statReadyCard">0</div>
+          <div class="muted">Siap didistribusikan</div>
+        </div>
+        <div class="card stat-card">
+          <div class="muted">Voucher Terpakai</div>
+          <div class="value" id="statUsedCard">0</div>
+          <div class="muted">Telah dikirim</div>
+        </div>
+        <div class="card stat-card">
+          <div class="muted">Total Voucher</div>
+          <div class="value" id="statTotalVoucher">0</div>
+          <div class="muted">Ready + Used</div>
+        </div>
+        <div class="card stat-card">
+          <div class="muted">Riwayat Terbit</div>
+          <div class="value" id="statIssuedCount">0</div>
+          <div class="muted">Penerbitan tercatat</div>
+        </div>
+      </div>
 
-          <!-- Bulk add / import -->
-          <div class="card" style="margin-top:12px">
-            <h4>Bulk Add / Import</h4>
-            <textarea id="bulkTxt" rows="6" placeholder="Format: KODE|PAKET per baris, contoh: TKJ-1H-ABC12|Paket 1 Jam"></textarea>
-            <div style="margin-top:8px;display:flex;gap:8px">
-              <button onclick="bulkAdd()">Tambah Bulk</button>
-              <button onclick="exportVouchers()">Export JSON</button>
-              <button onclick="importVouchers()">Import JSON</button>
-            </div>
-          </div>
-
-          <!-- Voucher list -->
-          <div class="card" style="margin-top:12px">
-            <h4>Daftar Voucher</h4>
-            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
-              <div class="muted">Filter:</div>
-              <select id="filterSel" onchange="renderList()">
-                <option value="all">Semua</option>
-                <option value="ready">Ready</option>
-                <option value="used">Used</option>
-              </select>
-              <div style="margin-left:auto" class="muted">Total: <span id="totalCount">0</span></div>
-            </div>
-            <table id="vTable">
-              <thead><tr><th>Kode</th><th>Paket</th><th>Status</th><th>Pemilik</th><th>Aksi</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-
-          <!-- Issue voucher manually -->
-          <div class="card" style="margin-top:12px">
-            <h4>Keluarkan Voucher ke User (Manual)</h4>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <input id="issuePhone" placeholder="Nomor WA tujuan (08xx...)">
-              <select id="issuePackage">
-                <option value="">--Pilih Paket (opsional, ambil voucher ready pertama)--</option>
-              </select>
-              <button onclick="issueVoucherManual()">Keluarkan</button>
-            </div>
-            <div class="muted" style="margin-top:8px">Kamu dapat memilih paket agar voucher yang dikeluarkan sesuai paket terpilih, atau kosongkan untuk ambil voucher ready pertama.</div>
-          </div>
-
-          <!-- History -->
-          <div class="card" style="margin-top:12px">
-            <h4>Riwayat (Issued)</h4>
-            <div id="issuedList" class="muted"></div>
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="section-title">Tambah Voucher</h3>
+          <p class="section-desc">Tambahkan kode voucher secara tunggal.</p>
+          <label>Kode Voucher
+            <input id="v_code" placeholder="TKJ-1H-AB12">
+          </label>
+          <label>Nama Paket
+            <input id="v_package" placeholder="Paket 1 Jam">
+          </label>
+          <button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="addVoucher()">Tambah Voucher</button>
+          <p class="muted" style="margin-top:10px">Gunakan bulk import untuk jumlah besar.</p>
+        </div>
+        <div class="card">
+          <h3 class="section-title">Bulk Import / Export</h3>
+          <p class="section-desc">Masukkan banyak kode sekaligus dengan format <code>KODE|PAKET</code> per baris.</p>
+          <textarea id="bulkTxt" rows="6" placeholder="TKJ-1H-ABC12|Paket 1 Jam&#10;TKJ-24H-XXXX|Paket 24 Jam"></textarea>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="btn btn-primary" onclick="bulkAdd()">Tambah Bulk</button>
+            <button class="btn btn-secondary" onclick="exportVouchers()">Export JSON</button>
+            <button class="btn btn-secondary" onclick="importVouchers()">Import JSON</button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-<script>
-  // Hardcoded credentials
-  const ADMIN_USER = 'admin_tkj';
-  const ADMIN_PASS = '12345';
+      <div class="card" style="margin-bottom:24px">
+        <h3 class="section-title">Daftar Voucher</h3>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+          <label style="margin:0">
+            <span class="muted">Filter Status</span>
+            <select id="filterSel" onchange="renderList()">
+              <option value="all">Semua</option>
+              <option value="ready">Ready</option>
+              <option value="used">Used</option>
+            </select>
+          </label>
+          <div class="muted" style="margin-left:auto">Total Data: <strong id="totalCount">0</strong></div>
+        </div>
+        <div class="table-wrapper" style="overflow:auto">
+          <table id="vTable">
+            <thead>
+              <tr>
+                <th>Kode</th>
+                <th>Paket</th>
+                <th>Status</th>
+                <th>Pemilik</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
 
-  // Storage keys
-  const KEY_V = 'tkj_vouchers'; // array of {code,package,status,owner,issuedAt}
-  const KEY_ISSUED = 'tkj_issued'; // history
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="section-title">Keluarkan Voucher ke User</h3>
+          <p class="section-desc">Pilih nomor WhatsApp tujuan dan paket (opsional).</p>
+          <label>Nomor WhatsApp
+            <input id="issuePhone" placeholder="08xx...">
+          </label>
+          <label>Paket
+            <select id="issuePackage">
+              <option value="">--Pilih Paket (opsional)--</option>
+            </select>
+          </label>
+          <button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="issueVoucherManual()">Kirim Voucher</button>
+          <p class="muted" style="margin-top:10px">Voucher otomatis akan ditandai sebagai used dan bisa dibuka di WhatsApp.</p>
+        </div>
+        <div class="card">
+          <h3 class="section-title">Riwayat Penerbitan</h3>
+          <div id="issuedList" class="issued-log muted">Belum ada riwayat</div>
+        </div>
+      </div>
 
-  // Login
-  function doLogin(){
-    const u = document.getElementById('loginUser').value.trim();
-    const p = document.getElementById('loginPass').value.trim();
-    const msg = document.getElementById('loginMsg');
-    if(u===ADMIN_USER && p===ADMIN_PASS){
-      msg.style.color='green'; msg.textContent='Login sukses';
-      showAdmin();
-    } else { msg.style.color='red'; msg.textContent='Username atau password salah'; }
-  }
-  function doLogout(){
-    document.getElementById('loginMsg').textContent=''; document.getElementById('adminArea').style.display='none'; document.getElementById('loginBox').style.display='block';
-  }
+      <div class="card" style="margin-bottom:24px">
+        <h3 class="section-title">Transaksi Terbaru</h3>
+        <p class="section-desc">Diambil dari data `tkj_orders` (front-end). Gunakan ini untuk memverifikasi transfer manual.</p>
+        <div class="table-wrapper" style="overflow:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Pembeli</th>
+                <th>Metode</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="transactionBody">
+              <tr><td colspan="5" class="muted" style="text-align:center;padding:18px">Belum ada transaksi</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-  function showAdmin(){
-    document.getElementById('loginBox').style.display='none';
-    document.getElementById('adminArea').style.display='block';
-    syncIssuePackageSelect();
-    renderList();
-    renderIssued();
-  }
+      <div class="card" style="margin-bottom:24px">
+        <h3 class="section-title">Grafik 7 Hari Terakhir</h3>
+        <p class="section-desc">Total pendapatan berdasarkan transaksi lunas.</p>
+        <div id="chartBars" class="chart">
+          <div class="muted">Belum ada data grafik.</div>
+        </div>
+      </div>
 
-  // Basic voucher helpers
-  function readVouchers(){ return JSON.parse(localStorage.getItem(KEY_V) || '[]'); }
-  function writeVouchers(arr){ localStorage.setItem(KEY_V, JSON.stringify(arr)); renderList(); syncIssuePackageSelect(); }
+      <div class="card">
+        <h3 class="section-title">Pengaturan & Laporan</h3>
+        <p class="section-desc">Backup voucher dan ekspor laporan keuangan.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="downloadReport('pdf')">⬇ Export PDF</button>
+          <button class="btn btn-secondary" onclick="downloadReport('excel')">⬇ Export Excel</button>
+          <button class="btn btn-secondary" onclick="backupVouchers()">💾 Backup Voucher</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  function addVoucher(){
-    const code = document.getElementById('v_code').value.trim();
-    const pkg = document.getElementById('v_package').value.trim() || 'Paket Umum';
-    if(!code){ alert('Isi kode voucher'); return; }
-    const arr = readVouchers();
-    // prevent duplicate codes
-    if(arr.find(x=>x.code===code)){ alert('Kode sudah ada'); return; }
-    arr.unshift({code,package:pkg,status:'ready',owner:'',issuedAt:''});
-    writeVouchers(arr);
-    document.getElementById('v_code').value=''; document.getElementById('v_package').value='';
-    alert('Voucher ditambahkan');
-  }
+  <script>
+    const ADMIN_USER = 'admin_tkj';
+    const ADMIN_PASS = '12345';
+    const KEY_V = 'tkj_vouchers';
+    const KEY_ISSUED = 'tkj_issued';
+    const ORDERS_KEY = 'tkj_orders';
+    const THEME_KEY = 'admin_theme';
 
-  function bulkAdd(){
-    const txt = document.getElementById('bulkTxt').value.trim();
-    if(!txt){ alert('Isi teks bulk (format: KODE|PAKET per baris)'); return; }
-    const lines = txt.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-    const arr = readVouchers();
-    let added=0;
-    lines.forEach(line=>{
-      // allow "KODE|PAKET" or just "KODE"
-      const parts = line.split('|').map(s=>s.trim());
-      const code = parts[0];
-      const pkg = parts[1] || 'Paket Umum';
-      if(!arr.find(x=>x.code===code)){
-        arr.unshift({code,package:pkg,status:'ready',owner:'',issuedAt:''});
-        added++;
-      }
-    });
-    writeVouchers(arr); document.getElementById('bulkTxt').value='';
-    alert(added+' voucher ditambahkan');
-  }
-
-  function renderList(){
-    const arr = readVouchers();
-    const filter = document.getElementById('filterSel').value;
-    const tbody = document.querySelector('#vTable tbody'); tbody.innerHTML='';
-    const filtered = arr.filter(v=> filter==='all' ? true : v.status===filter );
-    document.getElementById('totalCount').innerText = arr.length;
-    filtered.forEach((v,idx)=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${v.code}</td>
-        <td>${v.package}</td>
-        <td>${v.status==='ready' ? '<span class="status-ready">Ready</span>' : '<span class="status-used">Used</span>'}</td>
-        <td>${v.owner || '-'}</td>
-        <td>
-          <div class="actions">
-            <button class="small" onclick="toggleUsed('${v.code}')">${v.status==='ready' ? 'Tandai Dipakai':'Tandai Ready'}</button>
-            <button class="small" onclick="deleteVoucher('${v.code}')" style="background:#e53e3e">Hapus</button>
-          </div>
-        </td>`;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function toggleUsed(code){
-    const arr = readVouchers();
-    const idx = arr.findIndex(x=>x.code===code); if(idx===-1) return;
-    if(arr[idx].status==='ready'){ arr[idx].status='used'; arr[idx].issuedAt = new Date().toLocaleString(); }
-    else { arr[idx].status='ready'; arr[idx].owner=''; arr[idx].issuedAt=''; }
-    writeVouchers(arr);
-  }
-
-  function deleteVoucher(code){
-    if(!confirm('Hapus voucher '+code+' ?')) return;
-    let arr = readVouchers();
-    arr = arr.filter(x=>x.code!==code);
-    writeVouchers(arr);
-  }
-
-  // Export / import JSON
-  function exportVouchers(){
-    const arr = readVouchers();
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(arr, null, 2));
-    const dl = document.createElement('a'); dl.setAttribute('href', dataStr); dl.setAttribute('download','tkj_vouchers.json'); dl.click();
-  }
-  function importVouchers(){
-    const txt = prompt('Paste JSON vouchers di sini (array JSON) — menimpa data yang ada. Kosongkan untuk batal.');
-    if(!txt) return;
-    try{
-      const arr = JSON.parse(txt);
-      if(!Array.isArray(arr)) throw 'Bukan array';
-      // normalize
-      const norm = arr.map(x=>({code:x.code,package:x.package||x.pkg||'Paket Umum',status:x.status||'ready',owner:x.owner||'',issuedAt:x.issuedAt||''}));
-      localStorage.setItem(KEY_V, JSON.stringify(norm));
-      renderList(); alert('Import berhasil');
-    }catch(e){ alert('Gagal import: ' + e); }
-  }
-
-  // Issue voucher manually (admin -> user)
-  function issueVoucherManual(){
-    const phone = document.getElementById('issuePhone').value.trim();
-    if(!phone){ alert('Isi nomor WA tujuan'); return; }
-    const selPackage = document.getElementById('issuePackage').value;
-    const arr = readVouchers();
-    // find ready voucher with selected package else any ready
-    let idx = -1;
-    if(selPackage){
-      idx = arr.findIndex(x=>x.status==='ready' && x.package===selPackage);
-    }
-    if(idx===-1) idx = arr.findIndex(x=>x.status==='ready');
-    if(idx===-1){ alert('Tidak ada voucher ready'); return; }
-    const v = arr[idx]; arr[idx].status='used'; arr[idx].owner=phone; arr[idx].issuedAt = new Date().toLocaleString();
-    localStorage.setItem(KEY_V, JSON.stringify(arr));
-    addIssuedHistory({code:v.code,package:v.package,owner:phone,issuedAt:arr[idx].issuedAt,via:'manual'});
-    renderList(); renderIssued();
-    // show WA link (admin can click)
-    const msg = `Voucher Anda:\n${v.code} (${v.package})\nDari TEFA TKJ SMK Jaya Buana`;
-    if(confirm('Buka WhatsApp untuk mengirim kode ke '+phone+' ? (OK = WA, Cancel = Tidak)')){
-      window.open(`https://wa.me/${phone.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(msg)}`, '_blank');
-    } else {
-      navigator.clipboard?.writeText(msg).then(()=> alert('Pesan disalin ke clipboard.'));
-    }
-  }
-
-  // Add to issued history
-  function addIssuedHistory(obj){
-    const hist = JSON.parse(localStorage.getItem(KEY_ISSUED) || '[]');
-    hist.unshift(obj);
-    localStorage.setItem(KEY_ISSUED, JSON.stringify(hist));
-  }
-  function renderIssued(){
-    const hist = JSON.parse(localStorage.getItem(KEY_ISSUED) || '[]');
-    const wrap = document.getElementById('issuedList'); wrap.innerHTML='';
-    if(hist.length===0){ wrap.innerHTML = '<div class="muted">Belum ada riwayat</div>'; return; }
-    const lines = hist.slice(0,30).map(h=>`${h.issuedAt} — ${h.code} (${h.package}) → ${h.owner} [${h.via||'auto'}]`);
-    wrap.innerHTML = '<pre style="white-space:pre-wrap;margin:0;background:transparent;border:0;padding:0">'+lines.join('\n')+'</pre>';
-  }
-
-  // Preload sample vouchers
-  function loadSampleVouchers(){
-    if(!confirm('Isi sample voucher? (akan menambahkan beberapa kode sample ke storage lokal)')) return;
-    const sample = [
-      {code:'TKJ-1H-A1B2',package:'Paket 1 Jam',status:'ready',owner:'',issuedAt:''},
-      {code:'TKJ-24H-C3D4',package:'Paket Harian',status:'ready',owner:'',issuedAt:''},
-      {code:'TKJ-30D-E5F6',package:'Paket Bulanan',status:'ready',owner:'',issuedAt:''},
-      {code:'TKJ-1H-G7H8',package:'Paket 1 Jam',status:'ready',owner:'',issuedAt:''},
-      {code:'TKJ-4H-I9J0',package:'Paket Sore',status:'ready',owner:'',issuedAt:''}
-    ];
-    const arr = readVouchers();
-    // avoid duplicates by code
-    sample.forEach(s=>{ if(!arr.find(x=>x.code===s.code)) arr.unshift(s); });
-    writeVouchers(arr);
-    alert('Sample vouchers ditambahkan');
-  }
-
-  // Sync package select options for issue
-  function syncIssuePackageSelect(){
-    const sel = document.getElementById('issuePackage'); sel.innerHTML = '<option value="">--Pilih Paket (opsional)--</option>';
-    const arr = readVouchers();
-    const pkSet = Array.from(new Set(arr.map(x=>x.package)));
-    pkSet.forEach(p=>{ const o = document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o); });
-  }
-
-  // Auto-issue function used by frontend: this simulates "system mengambil voucher ready".
-  // FRONTEND (index.html) akan memanggil localStorage langsung. Tetapi admin juga dapat memicu function berikut from console.
-  function autoIssueForFrontend(qty){
-    // returns array of vouchers issued (code,package)
-    const arr = readVouchers();
-    const created = [];
-    for(let i=0;i<arr.length && created.length<qty;i++){
-      if(arr[i].status==='ready'){
-        arr[i].status='used';
-        arr[i].owner='AUTO-ISSUE';
-        arr[i].issuedAt = new Date().toLocaleString();
-        created.push({code:arr[i].code,package:arr[i].package});
+    function doLogin(){
+      const u = document.getElementById('loginUser').value.trim();
+      const p = document.getElementById('loginPass').value.trim();
+      const msg = document.getElementById('loginMsg');
+      if(u===ADMIN_USER && p===ADMIN_PASS){
+        msg.style.color = '#059669';
+        msg.textContent = 'Login sukses. Memuat dashboard...';
+        setTimeout(()=>showAdmin(),600);
+      } else {
+        msg.style.color = '#dc2626';
+        msg.textContent = 'Username atau password salah';
       }
     }
-    localStorage.setItem(KEY_V, JSON.stringify(arr));
-    if(created.length) addIssuedHistory({code: created[0].code, package: created[0].package, owner: 'AUTO-ISSUE', issuedAt: created[0].issuedAt, via:'auto'});
-    renderList(); renderIssued();
-    return created;
-  }
 
-  // Expose some functions for convenience in console
-  window.loadSampleVouchers = loadSampleVouchers;
-  window.autoIssueForFrontend = autoIssueForFrontend;
+    function doLogout(){
+      document.getElementById('loginMsg').textContent = '';
+      document.getElementById('loginSection').classList.remove('hidden');
+      document.getElementById('adminArea').classList.add('hidden');
+    }
 
-  // On load: if admin already logged in (simple check: show admin if vouchers exist)
-  document.addEventListener('DOMContentLoaded', ()=> {
-    // If vouchers exist and admin wants direct access, they still must log in.
-    // But for UX, fill issuePackage options.
-    syncIssuePackageSelect();
-    renderList();
-    renderIssued();
-  });
-</script>
+    function showAdmin(){
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('adminArea').classList.remove('hidden');
+      syncIssuePackageSelect();
+      renderList();
+      renderIssued();
+      renderTransactions();
+      renderChart();
+      updateStats();
+    }
+
+    function readVouchers(){ return JSON.parse(localStorage.getItem(KEY_V) || '[]'); }
+    function writeVouchers(arr){
+      localStorage.setItem(KEY_V, JSON.stringify(arr));
+      renderList();
+      syncIssuePackageSelect();
+      updateStats();
+    }
+
+    function addVoucher(){
+      const code = document.getElementById('v_code').value.trim();
+      const pkg = document.getElementById('v_package').value.trim() || 'Paket Umum';
+      if(!code){ alert('Isi kode voucher'); return; }
+      const arr = readVouchers();
+      if(arr.find(x=>x.code===code)){ alert('Kode sudah ada'); return; }
+      arr.unshift({code,package:pkg,status:'ready',owner:'',issuedAt:''});
+      writeVouchers(arr);
+      document.getElementById('v_code').value='';
+      document.getElementById('v_package').value='';
+      alert('Voucher ditambahkan');
+    }
+
+    function bulkAdd(){
+      const txt = document.getElementById('bulkTxt').value.trim();
+      if(!txt){ alert('Isi teks bulk (format: KODE|PAKET)'); return; }
+      const lines = txt.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      const arr = readVouchers();
+      let added = 0;
+      lines.forEach(line=>{
+        const [code,pkg] = line.split('|').map(s=>s?.trim());
+        if(code && !arr.find(x=>x.code===code)){
+          arr.unshift({code,package:pkg||'Paket Umum',status:'ready',owner:'',issuedAt:''});
+          added++;
+        }
+      });
+      writeVouchers(arr);
+      document.getElementById('bulkTxt').value='';
+      alert(`${added} voucher ditambahkan`);
+    }
+
+    function renderList(){
+      const arr = readVouchers();
+      const filter = document.getElementById('filterSel').value;
+      const tbody = document.querySelector('#vTable tbody');
+      tbody.innerHTML = '';
+      const filtered = arr.filter(v => filter==='all' ? true : v.status===filter);
+      document.getElementById('totalCount').innerText = arr.length;
+      filtered.forEach(v=>{
+        const tr = document.createElement('tr');
+        const pill = v.status==='ready'
+          ? '<span class="status-pill status-ready">Ready</span>'
+          : '<span class="status-pill status-used">Used</span>';
+        tr.innerHTML = `
+          <td>${v.code}</td>
+          <td>${v.package}</td>
+          <td>${pill}</td>
+          <td>${v.owner || '-'}</td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-secondary" style="padding:6px 10px;font-size:12px" onclick="toggleUsed('${v.code}')">${v.status==='ready'?'Tandai Dipakai':'Tandai Ready'}</button>
+            <button class="btn btn-danger" style="padding:6px 10px;font-size:12px" onclick="deleteVoucher('${v.code}')">Hapus</button>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+      updateStats();
+    }
+
+    function toggleUsed(code){
+      const arr = readVouchers();
+      const idx = arr.findIndex(x=>x.code===code);
+      if(idx===-1) return;
+      if(arr[idx].status==='ready'){
+        arr[idx].status='used';
+        arr[idx].issuedAt = new Date().toLocaleString();
+      } else {
+        arr[idx].status='ready';
+        arr[idx].owner='';
+        arr[idx].issuedAt='';
+      }
+      writeVouchers(arr);
+    }
+
+    function deleteVoucher(code){
+      if(!confirm(`Hapus voucher ${code}?`)) return;
+      let arr = readVouchers();
+      arr = arr.filter(x=>x.code!==code);
+      writeVouchers(arr);
+    }
+
+    function exportVouchers(){
+      const arr = readVouchers();
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(arr, null, 2));
+      const dl = document.createElement('a');
+      dl.href = dataStr;
+      dl.download = 'tkj_vouchers.json';
+      dl.click();
+    }
+
+    function importVouchers(){
+      const txt = prompt('Paste JSON voucher di sini (array). Kosongkan untuk batal.');
+      if(!txt) return;
+      try{
+        const arr = JSON.parse(txt);
+        if(!Array.isArray(arr)) throw 'Format salah';
+        const norm = arr.map(x=>({code:x.code,package:x.package||'Paket Umum',status:x.status||'ready',owner:x.owner||'',issuedAt:x.issuedAt||''}));
+        localStorage.setItem(KEY_V, JSON.stringify(norm));
+        renderList();
+        alert('Import berhasil');
+      }catch(e){
+        alert('Gagal import: '+e);
+      }
+    }
+
+    function issueVoucherManual(){
+      const phone = document.getElementById('issuePhone').value.trim();
+      if(!phone){ alert('Isi nomor WA tujuan'); return; }
+      const selPackage = document.getElementById('issuePackage').value;
+      const arr = readVouchers();
+      let idx = selPackage ? arr.findIndex(x=>x.status==='ready' && x.package===selPackage) : -1;
+      if(idx===-1) idx = arr.findIndex(x=>x.status==='ready');
+      if(idx===-1){ alert('Tidak ada voucher ready'); return; }
+      const v = arr[idx];
+      arr[idx].status='used';
+      arr[idx].owner=phone;
+      arr[idx].issuedAt = new Date().toLocaleString();
+      localStorage.setItem(KEY_V, JSON.stringify(arr));
+      addIssuedHistory({code:v.code,package:v.package,owner:phone,issuedAt:arr[idx].issuedAt,via:'manual'});
+      renderList();
+      renderIssued();
+      const msg = `Voucher Anda:%0a${v.code} (${v.package})%0aDari TEFA TKJ SMK Jaya Buana`;
+      if(confirm(`Buka WhatsApp untuk mengirim voucher ke ${phone}?`)){
+        window.open(`https://wa.me/${phone.replace(/[^0-9]/g,'')}?text=${msg}`,'_blank');
+      } else {
+        navigator.clipboard?.writeText(msg.replace(/%0a/g,'\n'));
+        alert('Pesan voucher disalin ke clipboard.');
+      }
+    }
+
+    function addIssuedHistory(obj){
+      const hist = JSON.parse(localStorage.getItem(KEY_ISSUED) || '[]');
+      hist.unshift(obj);
+      localStorage.setItem(KEY_ISSUED, JSON.stringify(hist));
+    }
+
+    function renderIssued(){
+      const hist = JSON.parse(localStorage.getItem(KEY_ISSUED) || '[]');
+      const wrap = document.getElementById('issuedList');
+      if(!hist.length){
+        wrap.textContent = 'Belum ada riwayat';
+        return;
+      }
+      wrap.textContent = hist.slice(0,40).map(h=>`${h.issuedAt} — ${h.code} (${h.package}) → ${h.owner} [${h.via||'auto'}]`).join('\n');
+      document.getElementById('statIssuedCount').textContent = hist.length;
+    }
+
+    function loadSampleVouchers(){
+      if(!confirm('Tambahkan voucher contoh?')) return;
+      const sample = [
+        {code:'TKJ-1H-A1B2',package:'Paket 1 Jam',status:'ready',owner:'',issuedAt:''},
+        {code:'TKJ-24H-C3D4',package:'Paket 24 Jam',status:'ready',owner:'',issuedAt:''},
+        {code:'TKJ-7D-D5E6',package:'Paket 7 Hari',status:'ready',owner:'',issuedAt:''},
+        {code:'TKJ-30D-F7G8',package:'Paket 30 Hari',status:'ready',owner:'',issuedAt:''}
+      ];
+      const arr = readVouchers();
+      sample.forEach(s=>{ if(!arr.find(x=>x.code===s.code)) arr.unshift(s); });
+      writeVouchers(arr);
+      alert('Voucher sample ditambahkan');
+    }
+
+    function syncIssuePackageSelect(){
+      const sel = document.getElementById('issuePackage');
+      sel.innerHTML = '<option value="">--Pilih Paket (opsional)--</option>';
+      const arr = readVouchers();
+      const pkSet = Array.from(new Set(arr.map(x=>x.package)));
+      pkSet.forEach(p=>{
+        const o = document.createElement('option');
+        o.value = p;
+        o.textContent = p;
+        sel.appendChild(o);
+      });
+    }
+
+    function renderTransactions(){
+      const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]').slice(-10).reverse();
+      const tbody = document.getElementById('transactionBody');
+      tbody.innerHTML = '';
+      if(!orders.length){
+        tbody.innerHTML = '<tr><td colspan="5" class="muted" style="text-align:center;padding:18px">Belum ada transaksi</td></tr>';
+        return;
+      }
+      orders.forEach(o=>{
+        const pillClass = o.status==='paid' ? 'status-pill status-used'
+          : o.status==='pending_confirmation' ? 'status-pill status-pending'
+          : 'status-pill status-failed';
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${new Date(o.createdAt).toLocaleString('id-ID')}</td>
+          <td>${o.buyerName} (${o.buyerPhone})</td>
+          <td>${o.paymentMethod?.toUpperCase()||'-'}</td>
+          <td>${currency(o.totalPrice)}</td>
+          <td><span class="${pillClass}">${o.status}</span></td>`;
+        tbody.appendChild(row);
+      });
+      document.getElementById('statPaidToday').textContent =
+        orders.filter(o=>o.status==='paid' && new Date(o.createdAt).toDateString() === new Date().toDateString()).length;
+    }
+
+    function renderChart(){
+      const chart = document.getElementById('chartBars');
+      const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+      if(!orders.length){
+        chart.innerHTML = '<div class="muted">Belum ada data grafik.</div>';
+        return;
+      }
+      const days = 7;
+      const now = new Date();
+      const series = [];
+      for(let i=days-1;i>=0;i--){
+        const date = new Date(now);
+        date.setDate(now.getDate()-i);
+        const total = orders.filter(o=>{
+          const d = new Date(o.createdAt);
+          return o.status==='paid' && d.toDateString()===date.toDateString();
+        }).reduce((sum,o)=>sum+o.totalPrice,0);
+        series.push({
+          label:date.toLocaleDateString('id-ID',{day:'2-digit',month:'short'}),
+          total
+        });
+      }
+      const max = Math.max(...series.map(s=>s.total),1);
+      chart.innerHTML = '';
+      series.forEach(item=>{
+        const bar = document.createElement('div');
+        bar.className = 'chart-bar';
+        const height = Math.round((item.total/max)*100);
+        bar.innerHTML = `
+          <div class="bar"><div class="bar-fill" style="height:${height}%"></div></div>
+          <div class="chart-label">${item.label}<br>${currency(item.total)}</div>`;
+        chart.appendChild(bar);
+      });
+    }
+
+    function updateStats(){
+      const arr = readVouchers();
+      const ready = arr.filter(v=>v.status==='ready').length;
+      const used = arr.filter(v=>v.status==='used').length;
+      document.getElementById('statReady').textContent = ready;
+      document.getElementById('statUsed').textContent = used;
+      document.getElementById('statReadyCard').textContent = ready;
+      document.getElementById('statUsedCard').textContent = used;
+      document.getElementById('statTotalVoucher').textContent = arr.length;
+    }
+
+    function downloadReport(format){
+      const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+      const data = {
+        generatedAt:new Date().toISOString(),
+        totalTransaksi:orders.length,
+        totalPendapatan:orders.reduce((s,o)=>s+o.totalPrice,0),
+        detail:orders
+      };
+      const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `laporan_admin.${format==='pdf'?'json':'json'}`;
+      a.click();
+      URL.revokeObjectURL(url);
+      alert('Data laporan siap diproses menjadi '+format.toUpperCase());
+    }
+
+    function backupVouchers(){
+      const data = JSON.stringify(readVouchers(),null,2);
+      const blob = new Blob([data],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'backup_voucher.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function initTheme(){
+      const saved = localStorage.getItem(THEME_KEY) || 'light';
+      document.body.setAttribute('data-theme',saved);
+      document.getElementById('themeToggle').textContent = saved==='light' ? '🌙 Mode Gelap' : '☀️ Mode Terang';
+    }
+
+    document.getElementById('themeToggle').addEventListener('click',()=>{
+      const current = document.body.getAttribute('data-theme');
+      const next = current==='light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme',next);
+      localStorage.setItem(THEME_KEY,next);
+      document.getElementById('themeToggle').textContent = next==='light' ? '🌙 Mode Gelap' : '☀️ Mode Terang';
+    });
+
+    window.loadSampleVouchers = loadSampleVouchers;
+    window.autoIssueForFrontend = qty => {
+      const arr = readVouchers();
+      const created = [];
+      for(let i=0;i<arr.length && created.length<qty;i++){
+        if(arr[i].status==='ready'){
+          arr[i].status='used';
+          arr[i].owner='AUTO-ISSUE';
+          arr[i].issuedAt = new Date().toLocaleString();
+          created.push({code:arr[i].code,package:arr[i].package});
+        }
+      }
+      localStorage.setItem(KEY_V, JSON.stringify(arr));
+      if(created.length) addIssuedHistory({code: created[0].code, package: created[0].package, owner: 'AUTO-ISSUE', issuedAt: created[0].issuedAt, via:'auto'});
+      renderList();
+      renderIssued();
+      updateStats();
+      return created;
+    };
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      initTheme();
+      syncIssuePackageSelect();
+      renderList();
+      renderIssued();
+      renderTransactions();
+      renderChart();
+      updateStats();
+    });
+  </script>
 </body>
 </html>

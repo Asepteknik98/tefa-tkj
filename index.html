@@ -3,304 +3,282 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TEFA TKJ — Beli Voucher | SMK Jaya Buana</title>
+  <title>TEFA TKJ Voucher UMKM — QRIS & WhatsApp Automation</title>
   <link rel="icon" type="image/png" sizes="32x32" href="images/LogoTKJ.png">
-  <meta name="description" content="Beli voucher internet praktis — TEFA TKJ SMK Jaya Buana">
+  <meta name="description" content="Website penjualan voucher UMKM dengan pembayaran QRIS realtime, transfer manual, pengiriman voucher WA, dan dashboard admin.">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
-    :root{--primary:#0b5ed7;--accent:#f59e0b;--muted:#6b7280;--bg:#f8fafc;--card:#fff;--radius:12px;--danger:#dc2626;--success:#10b981}
-    *{box-sizing:border-box} 
-    body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:#071022}
-    .container{max-width:1100px;margin:0 auto;padding:18px}
-    header{background:var(--card);padding:12px 0;border-bottom:1px solid #eee;position:sticky;top:0;z-index:40;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-    .nav{display:flex;gap:12px;align-items:center;justify-content:space-between}
-    .logo{display:flex;align-items:center;gap:10px}
-    .logo img{width:44px;height:44px;border-radius:8px}
-    nav{display:flex;gap:8px}
-    nav a, nav button{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;border:none;background:none;cursor:pointer;font-size:14px;transition:all 0.3s}
-    nav a:hover, nav button:hover{background:#f0f0f0;color:#0b5ed7}
-    .hero{display:flex;gap:18px;align-items:center;padding:28px 0}
-    .hero-left h1{margin:0;font-size:28px;font-weight:700}
-    .hero-left p{color:var(--muted);line-height:1.6;margin:10px 0}
-    .ctabtn{background:var(--primary);color:white;padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600;transition:all 0.3s}
-    .ctabtn:hover{opacity:0.9;transform:translateY(-2px)}
-    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:16px}
-    .product{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;flex-direction:column;justify-content:space-between;border:1px solid #f0f0f0;transition:all 0.3s}
-    .product:hover{box-shadow:0 8px 16px rgba(0,0,0,0.1);transform:translateY(-4px)}
-    .product-name{font-weight:700;font-size:16px;margin-bottom:6px}
-    .product-desc{font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.4}
-    .product-quota{font-size:12px;background:#f0f0f0;color:#444;padding:4px 8px;border-radius:6px;display:inline-block;margin-bottom:10px}
-    .price{font-weight:800;font-size:20px;color:var(--primary);margin:10px 0}
-    .product button{width:100%;padding:8px;border-radius:8px;border:1px solid var(--primary);background:var(--primary);color:white;cursor:pointer;font-weight:600;transition:all 0.3s}
-    .product button:hover{opacity:0.9;transform:scale(1.02)}
-    .cartbtn{position:fixed;right:18px;bottom:18px;background:var(--accent);color:#fff;padding:12px 16px;border-radius:999px;border:0;cursor:pointer;z-index:60;font-weight:600;box-shadow:0 4px 12px rgba(245,158,11,0.3);transition:all 0.3s}
-    .cartbtn:hover{opacity:0.9;transform:scale(1.05)}
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;padding:18px;z-index:100;overflow-y:auto}
-    .modal.open{display:flex}
-    .panel{background:var(--card);border-radius:10px;padding:24px;max-width:600px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto}
-    .panel h2, .panel h3{margin:0 0 16px 0;font-size:20px}
-    input, textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid #e8eef7;font-size:14px;margin-bottom:8px;font-family:inherit}
-    input:focus, select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(11,94,215,0.1)}
-    button{padding:10px 16px;border-radius:8px;border:0;background:var(--primary);color:#fff;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.3s}
-    button:hover{opacity:0.9}
-    button.secondary{background:#f0f0f0;color:#000}
-    button.danger{background:var(--danger)}
-    button:disabled{opacity:0.5;cursor:not-allowed}
-    .btn-group{display:flex;gap:8px;margin-top:16px}
-    .btn-group button{flex:1}
-    table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
-    th, td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:left}
-    th{background:#f9fafb;font-weight:600}
-    .qty-btn{padding:6px 10px;border-radius:6px;border:1px solid #e6e9ef;background:#fff;color:#000;cursor:pointer;min-width:32px;font-weight:600}
-    .qty-btn:hover{background:#f0f0f0}
-    .status{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600}
-    .status-paid{background:#d1fae5;color:#065f46}
+    :root{
+      --primary:#0b5ed7;
+      --primary-soft:#dbeafe;
+      --accent:#f59e0b;
+      --muted:#6b7280;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --card-soft:#eef2ff;
+      --border:#e2e8f0;
+      --radius:14px;
+      --danger:#dc2626;
+      --success:#059669;
+      --shadow:0 15px 45px rgba(15,23,42,0.08);
+    }
+    [data-theme="dark"]{
+      --primary:#60a5fa;
+      --primary-soft:#1d4ed8;
+      --accent:#f59e0b;
+      --muted:#cbd5f5;
+      --bg:#020617;
+      --card:#0f172a;
+      --card-soft:#1e293b;
+      --border:#1e293b;
+      --shadow:0 18px 50px rgba(2,6,23,0.8);
+    }
+    *{box-sizing:border-box;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{margin:0;background:var(--bg);color:#020617;transition:background .3s,color .3s}
+    body[data-theme="dark"]{color:#f8fafc}
+    a{text-decoration:none;color:inherit}
+    header{position:sticky;top:0;z-index:50;background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 5px 20px rgba(15,23,42,0.08)}
+    .nav{max-width:1200px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:44px;height:44px;border-radius:12px}
+    .brand-text{line-height:1.2}
+    .nav-links{display:flex;gap:10px;flex-wrap:wrap}
+    .nav-links a{padding:8px 14px;border-radius:999px;font-size:14px;color:var(--muted);transition:all .2s;border:1px solid transparent}
+    .nav-links a:hover{color:var(--primary);border-color:var(--primary-soft);background:var(--primary-soft)}
+    .cta-small{background:var(--primary);color:#fff;padding:10px 16px;border-radius:999px;border:none;font-weight:600;cursor:pointer;box-shadow:var(--shadow)}
+    .toggle-theme{background:transparent;border:1px solid var(--border);border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;color:var(--muted)}
+    main{max-width:1200px;margin:0 auto;padding:24px 18px 80px}
+    section{margin-top:48px}
+    .hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;align-items:center;padding:30px;border-radius:var(--radius);background:linear-gradient(135deg,#dbeafe,#fef3c7)}
+    body[data-theme="dark"] .hero{background:linear-gradient(135deg,#0f172a,#1d4ed8)}
+    .hero h1{font-size:36px;margin:0 0 16px;font-weight:800}
+    .hero p{color:#1f2937;margin:0 0 24px;font-size:16px;line-height:1.6}
+    body[data-theme="dark"] .hero p{color:#e2e8f0}
+    .hero-highlight{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-highlight span{background:rgba(255,255,255,0.85);padding:8px 12px;border-radius:999px;font-size:13px;font-weight:600;color:#0f172a}
+    body[data-theme="dark"] .hero-highlight span{background:rgba(15,23,42,0.5);color:#f8fafc}
+    .btn-primary{background:var(--primary);color:#fff;border:none;padding:14px 26px;font-weight:600;border-radius:999px;cursor:pointer;box-shadow:var(--shadow);font-size:16px}
+    .btn-ghost{border:1px solid var(--border);background:transparent;color:var(--primary);padding:12px 22px;border-radius:999px;font-weight:600;cursor:pointer}
+    .btn-secondary{background:var(--card-soft);color:#0f172a;border:none;padding:10px 16px;border-radius:12px;font-weight:600}
+    body[data-theme="dark"] .btn-secondary{color:#e2e8f0}
+    .section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end}
+    .section-head h2{margin:0;font-size:28px}
+    .section-head p{margin:0;color:var(--muted);font-size:14px}
+    .feature-grid,.products,.flow-grid,.admin-grid,.payment-grid,.faq-grid{display:grid;gap:18px}
+    .feature-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .feature-card h3{margin:12px 0 6px;font-size:18px}
+    .feature-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+    .products{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+    .product{display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+    .product .price{font-size:28px;font-weight:800;color:var(--primary)}
+    .badge{display:inline-block;padding:6px 12px;border-radius:999px;font-size:12px;background:var(--primary-soft);color:var(--primary);font-weight:600}
+    .flow-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .flow-card{position:relative;padding-left:28px}
+    .flow-card::before{content:"";position:absolute;left:8px;top:12px;bottom:12px;width:2px;background:var(--border)}
+    .flow-card span{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-weight:700;position:absolute;left:0;top:12px}
+    .payment-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:12px;border-bottom:1px solid var(--border);text-align:left}
+    th{background:var(--card-soft);color:#0f172a}
+    body[data-theme="dark"] th{color:#e2e8f0}
+    .status{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600}
+    .status-paid{background:#dcfce7;color:#166534}
     .status-pending{background:#fef3c7;color:#92400e}
-    .status-ready{background:#dbeafe;color:#1e40af}
-    .status-used{background:#fecaca;color:#991b1b}
-    .status-warning{background:#fed7aa;color:#92400e}
-    .alert{padding:12px;border-radius:8px;margin-bottom:12px;font-size:14px}
-    .alert-success{background:#d1fae5;color:#065f46;border-left:4px solid #10b981}
-    .alert-error{background:#fee2e2;color:#991b1b;border-left:4px solid #ef4444}
-    .alert-info{background:#dbeafe;color:#1e40af;border-left:4px solid #3b82f6}
-    .alert-warning{background:#fef3c7;color:#92400e;border-left:4px solid #f59e0b}
-    .summary{background:#f9fafb;padding:12px;border-radius:8px;margin:12px 0;border-left:4px solid var(--primary)}
-    footer{background:#fff;color:#000;text-align:center;padding:14px 0;border-top:1px solid #e5e5e5;margin-top:40px;font-size:13px;color:var(--muted)}
-    .loading{text-align:center;padding:20px;color:var(--muted)}
-    .empty{text-align:center;padding:30px 20px;color:var(--muted)}
-    .section-title{font-size:24px;font-weight:700;margin:20px 0 10px 0}
-    .section-desc{color:var(--muted);margin-bottom:16px}
-    .qr-container{background:white;padding:20px;border-radius:8px;display:inline-block;text-align:center}
-    #qrcode{margin:0 auto}
-    .bank-info{background:#f9fafb;padding:15px;border-radius:8px;border-left:4px solid var(--accent);font-family:monospace;font-size:14px}
-    .bank-info div{margin:8px 0}
-    .bank-info strong{color:#000}
-    .timer{font-size:18px;font-weight:700;color:var(--danger);text-align:center;margin:10px 0}
-    .success-box{background:#d1fae5;border:2px solid #10b981;padding:20px;border-radius:8px;text-align:center;margin:12px 0}
-    .success-box strong{color:#065f46;font-size:18px}
-    .voucher-codes{background:#071022;color:#fff;padding:15px;border-radius:8px;font-family:monospace;font-size:13px;line-height:2;margin:12px 0}
-    @media (max-width:900px){.hero{flex-direction:column}.logo{margin-right:auto}}
-    @media (max-width:600px){nav{display:none}.products{grid-template-columns:1fr}.cartbtn{width:auto;bottom:60px}.hero{padding:14px 0}.panel{max-width:100%}}
+    .status-failed{background:#fee2e2;color:#b91c1c}
+    .admin-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+    .stat-value{font-size:32px;font-weight:800;margin:4px 0}
+    .chart{display:flex;gap:12px;align-items:flex-end;height:180px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .bar{width:100%;background:var(--primary-soft);border-radius:12px 12px 0 0;display:flex;align-items:flex-end;justify-content:center}
+    .bar-fill{width:100%;background:var(--primary);border-radius:12px 12px 0 0}
+    .chart-label{font-size:12px;color:var(--muted);text-align:center}
+    .faq-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .faq-card h4{margin:0 0 8px}
+    .tag-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .tag{padding:6px 10px;border-radius:999px;background:var(--card-soft);font-size:12px;color:#0f172a}
+    body[data-theme="dark"] .tag{color:#e2e8f0}
+    .timeline{display:flex;gap:14px;flex-wrap:wrap}
+    .timeline span{background:var(--card);border:1px dashed var(--border);padding:10px 14px;border-radius:var(--radius);font-size:13px}
+    .input-border{border:1px solid var(--border);border-radius:10px;padding:12px;font-size:14px;width:100%}
+    .history-wrap{margin-top:18px}
+    .empty{text-align:center;color:var(--muted);padding:20px}
+    footer{margin-top:80px;text-align:center;color:var(--muted);font-size:14px;padding:24px 0;border-top:1px solid var(--border)}
+    .floating-cart{position:fixed;right:20px;bottom:20px;z-index:60}
+    .floating-cart button{background:var(--accent);color:#fff;border:none;padding:14px 22px;border-radius:999px;font-weight:700;box-shadow:0 15px 30px rgba(245,158,11,0.4);cursor:pointer}
+    @media(max-width:720px){
+      .nav{flex-direction:column;align-items:flex-start}
+      .nav-links{width:100%;overflow:auto}
+      .hero{padding:24px}
+      .section-head{flex-direction:column;align-items:flex-start}
+    }
+    .modal{position:fixed;inset:0;background:rgba(15,23,42,0.65);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}
+    .modal.open{display:flex}
+    .panel{background:var(--card);color:inherit;border-radius:var(--radius);padding:24px;width:100%;max-width:620px;box-shadow:var(--shadow);max-height:90vh;overflow:auto}
+    .bank-info{background:var(--card-soft);padding:14px;border-radius:var(--radius);border:1px dashed var(--primary);font-family:monospace;font-size:14px}
+    .alert{padding:14px;border-radius:var(--radius);font-size:14px;margin-bottom:12px}
+    .alert-info{background:var(--primary-soft);color:#0f172a}
+    .alert-warning{background:#fef3c7;color:#92400e}
+    .alert-success{background:#dcfce7;color:#166534}
+    .success-voucher{background:#020617;color:#fff;padding:14px;border-radius:var(--radius);font-family:monospace;font-size:13px;margin-top:12px}
   </style>
 </head>
-<body>
+<body data-theme="light">
   <header>
-    <div class="container nav">
-      <div class="logo">
-        <img src="images/LogoTKJ.png" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2244%22%3E%3Crect fill=%22%230b5ed7%22 width=%2244%22 height=%22444%22 rx=%228%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2224%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22 font-weight=%22bold%22%3ETKJ%3C/text%3E%3C/svg%3E'">
-        <div>
-          <div style="font-weight:700">SMK Jaya Buana</div>
-          <div style="font-size:12px;color:var(--muted)">TEFA — TKJ</div>
+    <div class="nav">
+      <div class="brand">
+        <img src="images/LogoTKJ.png" alt="TEFA TKJ">
+        <img src="images/jb.png" alt="SMK JB" style="width:40px;height:40px;border-radius:10px">
+        <div class="brand-text">
+          <strong>TEFA TKJ — SMK Jaya Buana</strong>
+          <div style="font-size:13px;color:var(--muted)">Voucher Internet</div>
         </div>
       </div>
-      <nav>
-        <a href="javascript:void(0)" onclick="showUserHistory()">📋 Riwayat Saya</a>
-        <button onclick="toggleUserMenu()" style="background:none">👤 Akun</button>
-        <a href="admin.html" target="_blank">🔐 Admin</a>
-      </nav>
+      <div class="controls">
+        <button class="toggle-theme" id="themeToggle">🌙 Mode Gelap</button>
+        <a class="cta-small" href="admin.html" target="_blank">🔐 Login Admin</a>
+      </div>
     </div>
   </header>
 
-  <main class="container" id="home">
-    <div id="msgBox"></div>
-
-    <section class="hero">
-      <div class="hero-left" style="flex:1">
-        <h1>Akses Internet Cepat & Stabil untuk Pelajar</h1>
-        <p>Voucher praktis untuk belajar, tugas, dan hiburan — paket pelajar dengan harga terjangkau dan dukungan praktik TKJ SMK Jaya Buana.</p>
-        <div style="margin-top:10px"><button class="ctabtn" onclick="scrollToSection('vouchers')">🛍️ Beli Sekarang</button></div>
+  <main>
+    <section id="paket">
+      <div class="section-head">
+        <div>
+          <h2>Daftar Paket Voucher</h2>
+          <p>Paket fleksibel mulai 1 jam hingga langganan bulanan.</p>
+        </div>
+        <button class="btn-secondary" onclick="openCart()">Lihat Keranjang</button>
       </div>
-    </section>
-
-    <section id="vouchers" style="margin-top:28px">
-      <h2 class="section-title">Pilihan Voucher</h2>
-      <p class="section-desc">Pilih paket sesuai kebutuhan Anda — Harga terjangkau untuk pelajar</p>
       <div class="products" id="productList">
-        <div class="loading">⏳ Memuat paket...</div>
+        <div class="card">Memuat paket...</div>
       </div>
     </section>
 
-    <section style="margin-top:40px;background:#f9fafb;padding:20px;border-radius:12px">
-      <h3>❓ Bantuan & FAQ</h3>
-      <div style="display:grid;gap:12px">
-        <div style="background:white;padding:12px;border-radius:8px">
-          <strong>Bagaimana cara membeli?</strong>
-          <p style="color:var(--muted);margin:6px 0 0 0;font-size:13px">Pilih paket, masukkan nomor WA, pilih pembayaran QRIS/Transfer, lalu tunggu voucher dikirim ke WA Anda.</p>
+    <section id="beli">
+      <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn-primary" onclick="scrollToSection('paket')">Tambah ke Keranjang</button>
+        <button class="btn-secondary" onclick="openCart()">Checkout Sekarang</button>
+      </div>
+    </section>
+
+    <section id="riwayat">
+      <div class="section-head">
+        <div>
+          <h2>Riwayat Pembelian</h2>
+          <p>Cek voucher kapan saja menggunakan nomor WhatsApp.</p>
         </div>
-        <div style="background:white;padding:12px;border-radius:8px">
-          <strong>Berapa lama voucher aktif?</strong>
-          <p style="color:var(--muted);margin:6px 0 0 0;font-size:13px">Tergantung paket. Paket 1 jam aktif 1 jam, 24 jam aktif sehari, dan paket 7 hari aktif seminggu dari saat penggunaan.</p>
+      </div>
+      <form id="historyForm" class="card">
+        <label for="historyInput">Nomor WhatsApp</label>
+        <input class="input-border" id="historyInput" type="tel" placeholder="08xx..." pattern="08[0-9]{8,}" required>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <button class="btn-primary" type="submit">🔎 Lihat Riwayat</button>
+          <button class="btn-secondary" type="button" onclick="resetHistory()">Reset</button>
         </div>
-        <div style="background:white;padding:12px;border-radius:8px">
-          <strong>Voucher tidak terima?</strong>
-          <p style="color:var(--muted);margin:6px 0 0 0;font-size:13px">Pastikan nomor WA sudah benar. Cek riwayat pembelian atau hubungi admin untuk resend.</p>
-        </div>
+      </form>
+      <div class="card history-wrap" id="historyResult">
+        <div class="empty">Masukkan nomor WhatsApp untuk menampilkan riwayat transaksi Anda.</div>
       </div>
     </section>
   </main>
 
-  <button class="cartbtn" onclick="openCart()">🛒 Keranjang <span id="cartCount">(0)</span></button>
+  <div class="floating-cart">
+    <button onclick="openCart()">🛒 Keranjang <span id="cartCount">(0)</span></button>
+  </div>
 
-  <!-- Cart Modal -->
+  <footer>
+    © <span id="year"></span> TEFA TKJ SMK Jaya Buana
+  </footer>
+
+  <!-- Modals & Checkout -->
   <div id="cartModal" class="modal" onclick="if(event.target===this)closeModal('cartModal')">
     <div class="panel">
       <h3>🛒 Keranjang Belanja</h3>
-      <div id="cartItems" style="margin-top:10px">
-        <div class="empty">Keranjang kosong</div>
-      </div>
-      <div class="btn-group">
-        <button class="secondary" onclick="closeModal('cartModal')">Batal</button>
-        <button onclick="goToCheckout()">Lanjut Checkout</button>
+      <div id="cartItems"></div>
+      <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="closeModal('cartModal')">Tutup</button>
+        <button class="btn-primary" onclick="goToCheckout()">Lanjut Checkout</button>
       </div>
     </div>
   </div>
 
-  <!-- Checkout Modal -->
   <div id="checkoutModal" class="modal" onclick="if(event.target===this)closeModal('checkoutModal')">
     <div class="panel">
-      <h3>💳 Checkout</h3>
-      <form id="checkoutForm" onsubmit="event.preventDefault(); goToPaymentMethod()">
-        <label>
-          <strong>Nama (opsional)</strong>
-          <input id="buyerName" type="text" placeholder="Nama Anda">
+      <h3>💳 Data Pembeli</h3>
+      <form onsubmit="event.preventDefault(); goToPaymentMethod();">
+        <label>Nama Lengkap (opsional)
+          <input class="input-border" id="buyerName" type="text" placeholder="Nama Anda">
         </label>
-        <label>
-          <strong>Nomor WhatsApp / HP (wajib) 📱</strong>
-          <input id="buyerPhone" type="tel" required placeholder="08xx..." pattern="08[0-9]{8,}">
+        <label>Nomor WhatsApp (wajib)
+          <input class="input-border" id="buyerPhone" type="tel" placeholder="08xx..." required pattern="08[0-9]{8,}">
         </label>
-        <div class="summary">
+        <div class="card" style="margin:16px 0;background:var(--card-soft)">
           <div>Total Item: <strong id="totalQty">0</strong></div>
-          <div style="margin-top:6px">Total Harga: <strong id="checkoutSummary">Rp 0</strong></div>
+          <div>Total Harga: <strong id="checkoutSummary">Rp 0</strong></div>
         </div>
-        <strong>Pilih Metode Pembayaran:</strong>
-        <div class="btn-group" style="margin-top:12px">
-          <button type="button" onclick="goToQRIS()">💳 QRIS</button>
-          <button type="button" onclick="goToTransfer()" class="secondary">🏦 Transfer Manual</button>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button type="button" class="btn-primary" onclick="goToQRIS()">Bayar QRIS</button>
+          <button type="button" class="btn-secondary" onclick="goToTransfer()">Transfer Manual</button>
         </div>
-        <div class="btn-group">
-          <button type="button" onclick="closeModal('checkoutModal')" class="secondary">Batal</button>
-        </div>
+        <button type="button" class="btn-secondary" style="margin-top:12px" onclick="closeModal('checkoutModal')">Batal</button>
       </form>
     </div>
   </div>
 
-  <!-- QRIS Payment Modal -->
   <div id="qrisModal" class="modal" onclick="if(event.target===this)closeModal('qrisModal')">
     <div class="panel" style="text-align:center">
       <h3>💰 Bayar dengan QRIS</h3>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:10px">Scan QR code di bawah menggunakan aplikasi mobile banking atau e-wallet Anda</p>
-      
-      <div style="background:#f9fafb;padding:20px;border-radius:8px;margin:15px 0">
-        <div id="qrcode" style="display:inline-block"></div>
-      </div>
-
+      <p>Scan QR berikut dari aplikasi bank/e-wallet Anda.</p>
+      <div id="qrcode" style="margin:0 auto;width:220px;height:220px"></div>
       <div class="timer" id="qrisTimer">⏰ 15:00</div>
-      
-      <div style="background:#fef3c7;padding:10px;border-radius:6px;margin:10px 0;font-size:13px">
-        <div><strong>Total Pembayaran:</strong> <span id="qrisAmount">Rp 0</span></div>
-        <div style="margin-top:5px;color:#666">Waktu kadaluarsa: 15 menit</div>
+      <div class="card" style="background:var(--card-soft)">
+        Total Pembayaran: <strong id="qrisAmount">Rp 0</strong>
+        <div style="font-size:13px;color:var(--muted)">Kadaluarsa dalam 15 menit.</div>
       </div>
-
-      <div class="btn-group" style="margin-top:15px">
-        <button onclick="confirmQRISPayment()" class="secondary">✅ Saya Sudah Bayar</button>
-        <button onclick="cancelQRIS()" class="secondary">❌ Batal</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px">
+        <button class="btn-primary" onclick="confirmQRISPayment()">✅ Saya Sudah Bayar</button>
+        <button class="btn-secondary" onclick="cancelQRIS()">❌ Batal</button>
       </div>
     </div>
   </div>
 
-  <!-- Transfer Manual Modal -->
   <div id="transferModal" class="modal" onclick="if(event.target===this)closeModal('transferModal')">
     <div class="panel">
       <h3>🏦 Transfer Bank Manual</h3>
-      
-      <div class="alert alert-info">
-        <strong>📋 Silakan transfer ke rekening di bawah:</strong>
-      </div>
-
+      <div class="alert alert-info">Silakan transfer sesuai nominal berikut.</div>
       <div class="bank-info">
-        <div><strong>🏦 Bank:</strong> BCA</div>
-        <div><strong>💳 No. Rekening:</strong> 123 456 789</div>
-        <div><strong>👤 Atas Nama:</strong> Rohmad Kuswindarto</div>
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid #e0e0e0">
-          <strong>💰 Jumlah Transfer:</strong>
-          <div style="font-size:18px;color:var(--primary);margin-top:5px" id="transferAmount">Rp 0</div>
-        </div>
+        <div>Bank: BCA</div>
+        <div>No Rek: 123 456 789</div>
+        <div>Atas Nama: Rohmad Kuswindarto</div>
+        <div style="margin-top:12px">Total: <strong id="transferAmount">Rp 0</strong></div>
       </div>
-
-      <div class="alert alert-warning" style="margin-top:15px">
-        <strong>⚠️ Petunjuk Pembayaran:</strong>
-        <ol style="margin:8px 0;padding-left:20px;font-size:13px">
-          <li>Transfer ke rekening di atas sesuai jumlah yang tertera</li>
-          <li>Tunggu konfirmasi dari admin (1-5 menit)</li>
-          <li>Voucher akan dikirim ke WhatsApp Anda</li>
-          <li>Atau klik "Konfirmasi Sudah Transfer" jika sudah melakukan pembayaran</li>
-        </ol>
+      <div class="alert alert-warning" style="margin-top:12px">
+        Transfer sesuai nominal, simpan bukti, lalu klik “Konfirmasi Sudah Transfer”.
       </div>
-
-      <div class="alert alert-info" style="margin-top:10px;font-size:12px">
-        💡 <strong>Tips:</strong> Simpan bukti transfer untuk konfirmasi
-      </div>
-
-      <div class="btn-group" style="margin-top:15px">
-        <button onclick="cancelTransfer()" class="secondary">❌ Batal</button>
-        <button onclick="confirmTransferPayment()">✅ Konfirmasi Sudah Transfer</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="cancelTransfer()">Batal</button>
+        <button class="btn-primary" onclick="confirmTransferPayment()">Konfirmasi Sudah Transfer</button>
       </div>
     </div>
   </div>
 
-  <!-- Success Modal -->
   <div id="successModal" class="modal" onclick="if(event.target===this)closeModal('successModal')">
     <div class="panel" style="text-align:center">
-      <div style="font-size:48px;margin-bottom:10px">✅</div>
-      <h3>Pembayaran Berhasil!</h3>
-      
-      <div class="success-box">
-        <div style="color:#065f46">Voucher Anda sudah diterbitkan</div>
-        <div style="font-size:12px;margin-top:5px">Kode voucher dikirim ke WhatsApp Anda</div>
-      </div>
-
-      <div style="background:#f9fafb;padding:15px;border-radius:8px;margin:15px 0;text-align:left">
-        <div><strong>Nama:</strong> <span id="successName">-</span></div>
-        <div><strong>No WA:</strong> <span id="successPhone">-</span></div>
-        <div><strong>Total:</strong> <span id="successAmount">-</span></div>
-        <div style="margin-top:10px"><strong>Kode Voucher:</strong></div>
-        <div class="voucher-codes" id="successVouchers">-</div>
-      </div>
-
-      <div class="alert alert-info" style="font-size:12px">
-        📱 Cek WhatsApp Anda untuk detail lengkap. Jika belum terima, tanyakan ke admin atau hubungi nomor yang tertera di halaman ini.
-      </div>
-
-      <button onclick="closeSuccess()" style="width:100%;margin-top:15px">Tutup & Kembali</button>
+      <h2>✅ Pembayaran Berhasil</h2>
+      <p>Voucher telah dikirim ke WhatsApp Anda.</p>
+      <div class="alert alert-success" id="successSummary"></div>
+      <div class="success-voucher" id="successVouchers">-</div>
+      <button class="btn-primary" style="margin-top:16px" onclick="closeSuccess()">Tutup</button>
     </div>
   </div>
-
-  <!-- History Modal -->
-  <div id="historyModal" class="modal" onclick="if(event.target===this)closeModal('historyModal')">
-    <div class="panel">
-      <h3>📋 Riwayat Pembelian Saya</h3>
-      <label>
-        <strong>Nomor WhatsApp</strong>
-        <input id="historyPhone" type="tel" placeholder="08xx..." pattern="08[0-9]{8,}" onchange="loadUserHistory()">
-      </label>
-      <div id="historyItems" style="margin-top:12px">
-        <div class="empty">Masukkan nomor WA untuk melihat riwayat</div>
-      </div>
-      <button onclick="closeModal('historyModal')" class="secondary" style="width:100%;margin-top:12px">Tutup</button>
-    </div>
-  </div>
-
-  <footer>
-    © <span id="year"></span> TEFA TKJ SMK Jaya Buana — Pusat Keunggulan Vokasi<br>
-    💬 WhatsApp: +62 812-3456-7890 | 📧 Email: info@tefatkj.sch.id
-  </footer>
 
   <script>
-    // ====== CONFIG ======
-    const STORAGE_KEY = 'tkj_data';
     const CART_KEY = 'tkj_cart';
     const ORDERS_KEY = 'tkj_orders';
     const VOUCHERS_KEY = 'tkj_vouchers';
+    const LAST_PHONE_KEY = 'tkj_last_phone';
+    const THEME_KEY = 'tkj_theme';
 
     let cart = [];
     let allOrders = [];
@@ -309,428 +287,322 @@
     let currentOrder = null;
     let qrisTimer = null;
 
-    // ====== HELPERS ======
-    function showMsg(msg, type = 'info') {
-      const box = document.getElementById('msgBox');
-      box.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-      setTimeout(() => { box.innerHTML = ''; }, 5000);
-    }
+    const currency = n => 'Rp ' + Number(n || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const scrollToSection = id => document.getElementById(id)?.scrollIntoView({ behavior:'smooth' });
+    const openModal = id => document.getElementById(id).classList.add('open');
+    const closeModal = id => document.getElementById(id).classList.remove('open');
 
-    function currency(n) {
-      return 'Rp ' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    }
-
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.add('open');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('open');
-    }
-
-    // ====== STORAGE ======
-    function saveData() {
+    function saveState(){
       localStorage.setItem(CART_KEY, JSON.stringify(cart));
       localStorage.setItem(ORDERS_KEY, JSON.stringify(allOrders));
       localStorage.setItem(VOUCHERS_KEY, JSON.stringify(allVouchers));
     }
-
-    function loadData() {
+    function loadState(){
       cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
       allOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
       allVouchers = JSON.parse(localStorage.getItem(VOUCHERS_KEY) || '[]');
     }
 
-    // ====== CART FUNCTIONS ======
-    function addToCart(productId) {
-      const product = products.find(p => p._id === productId);
-      if (!product) {
-        showMsg('Produk tidak ditemukan', 'error');
-        return;
-      }
-
-      const existing = cart.find(x => x._id === productId);
-      if (existing) {
-        existing.qty++;
-      } else {
-        cart.push({ ...product, qty: 1 });
-      }
-
-      saveData();
-      updateCartCount();
-      showMsg('✅ Produk ditambahkan ke keranjang', 'success');
-      openCart();
-    }
-
-    function updateCartCount() {
-      const count = cart.reduce((s, i) => s + i.qty, 0);
-      document.getElementById('cartCount').textContent = `(${count})`;
-    }
-
-    function openCart() {
-      renderCartItems();
-      openModal('cartModal');
-    }
-
-    function renderCartItems() {
-      const wrap = document.getElementById('cartItems');
-      wrap.innerHTML = '';
-
-      if (cart.length === 0) {
-        wrap.innerHTML = '<div class="empty">Keranjang kosong</div>';
-        return;
-      }
-
-      const table = document.createElement('table');
-      let html = '<thead><tr><th>Produk</th><th style="width:100px">Qty</th><th style="width:150px">Subtotal</th><th style="width:60px">Aksi</th></tr></thead><tbody>';
-
-      cart.forEach(item => {
-        html += `<tr>
-          <td>
-            <div style="font-weight:600">${item.name}</div>
-            <div style="font-size:12px;color:var(--muted)">${item.duration}</div>
-          </td>
-          <td style="text-align:center">
-            <button class="qty-btn" onclick="changeQty('${item._id}', -1)">−</button>
-            <span style="padding:0 8px">${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty('${item._id}', 1)">+</button>
-          </td>
-          <td>${currency(item.price * item.qty)}</td>
-          <td><button onclick="removeItem('${item._id}')" class="danger" style="padding:4px 8px;font-size:12px;width:100%">Hapus</button></td>
-        </tr>`;
-      });
-
-      html += '</tbody>';
-      table.innerHTML = html;
-      wrap.appendChild(table);
-
-      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      const sumEl = document.createElement('div');
-      sumEl.style.cssText = 'text-align:right;margin-top:16px;font-size:16px';
-      sumEl.innerHTML = `<strong>Total: ${currency(total)}</strong>`;
-      wrap.appendChild(sumEl);
-    }
-
-    function changeQty(id, delta) {
-      const item = cart.find(x => x._id === id);
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) removeItem(id);
-      else {
-        saveData();
-        renderCartItems();
-      }
-    }
-
-    function removeItem(id) {
-      cart = cart.filter(x => x._id !== id);
-      saveData();
-      updateCartCount();
-      renderCartItems();
-    }
-
-    // ====== CHECKOUT ======
-    function goToCheckout() {
-      if (cart.length === 0) {
-        showMsg('Keranjang kosong', 'error');
-        return;
-      }
-
-      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
-
-      document.getElementById('totalQty').textContent = totalQty;
-      document.getElementById('checkoutSummary').textContent = currency(total);
-      closeModal('cartModal');
-      openModal('checkoutModal');
-    }
-
-    function goToPaymentMethod() {
-      const name = document.getElementById('buyerName').value.trim();
-      const phone = document.getElementById('buyerPhone').value.trim();
-
-      if (!phone) {
-        showMsg('Isi nomor WhatsApp/HP', 'error');
-        return;
-      }
-
-      if (!/^08[0-9]{8,}$/.test(phone)) {
-        showMsg('Format nomor WA salah (08xx...)', 'error');
-        return;
-      }
-
-      // Create order object
-      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
-
-      currentOrder = {
-        _id: 'order_' + Date.now(),
-        buyerName: name || 'Pembeli',
-        buyerPhone: phone,
-        items: cart.map(c => ({
-          packageId: c._id,
-          name: c.name,
-          price: c.price,
-          qty: c.qty
-        })),
-        totalPrice: total,
-        totalQty: totalQty,
-        status: 'pending',
-        voucherIssued: [],
-        createdAt: new Date().toISOString(),
-        paymentMethod: 'pending'
-      };
-    }
-
-    // ====== QRIS PAYMENT ======
-    function goToQRIS() {
-      goToPaymentMethod();
-      if (!currentOrder) return;
-
-      closeModal('checkoutModal');
-      openModal('qrisModal');
-
-      // Generate QR Code
-      document.getElementById('qrcode').innerHTML = '';
-      new QRCode(document.getElementById('qrcode'), {
-        text: `QRIS-${currentOrder._id}-${currentOrder.totalPrice}`,
-        width: 220,
-        height: 220,
-        colorDark: '#0b5ed7',
-        colorLight: '#ffffff'
-      });
-
-      document.getElementById('qrisAmount').textContent = currency(currentOrder.totalPrice);
-
-      // Start timer
-      startQRISTimer();
-    }
-
-    function startQRISTimer() {
-      let timeLeft = 15 * 60; // 15 minutes
-      
-      const updateTimer = () => {
-        const min = Math.floor(timeLeft / 60);
-        const sec = timeLeft % 60;
-        document.getElementById('qrisTimer').textContent = 
-          `⏰ ${min}:${sec.toString().padStart(2, '0')}`;
-        
-        if (timeLeft <= 0) {
-          clearInterval(qrisTimer);
-          closeModal('qrisModal');
-          showMsg('❌ QRIS sudah kadaluarsa. Silakan buat ulang order', 'error');
-          currentOrder = null;
-        }
-        timeLeft--;
-      };
-
-      updateTimer();
-      qrisTimer = setInterval(updateTimer, 1000);
-    }
-
-    function confirmQRISPayment() {
-      if (!currentOrder) return;
-
-      if (qrisTimer) clearInterval(qrisTimer);
-
-      // Proses pembayaran
-      processPayment('qris');
-    }
-
-    function cancelQRIS() {
-      if (qrisTimer) clearInterval(qrisTimer);
-      closeModal('qrisModal');
-      currentOrder = null;
-    }
-
-    // ====== TRANSFER PAYMENT ======
-    function goToTransfer() {
-      goToPaymentMethod();
-      if (!currentOrder) return;
-
-      closeModal('checkoutModal');
-      document.getElementById('transferAmount').textContent = currency(currentOrder.totalPrice);
-      openModal('transferModal');
-    }
-
-    function confirmTransferPayment() {
-      if (!currentOrder) return;
-
-      processPayment('transfer');
-    }
-
-    function cancelTransfer() {
-      closeModal('transferModal');
-      currentOrder = null;
-    }
-
-    // ====== PROCESS PAYMENT ======
-    function processPayment(method) {
-      if (!currentOrder) return;
-
-      currentOrder.paymentMethod = method;
-      currentOrder.status = 'paid';
-
-      // Generate vouchers
-      const vouchersNeeded = currentOrder.totalQty;
-      let issuedVouchers = [];
-
-      for (let i = 0; i < vouchersNeeded; i++) {
-        const voucher = {
-          _id: 'voucher_' + Date.now() + '_' + i,
-          code: generateVoucherCode(),
-          package: currentOrder.items[0]?.name || 'Paket Umum',
-          status: 'used',
-          owner: currentOrder.buyerPhone,
-          issuedAt: new Date().toISOString(),
-          createdAt: new Date().toISOString()
-        };
-        allVouchers.push(voucher);
-        currentOrder.voucherIssued.push(voucher.code);
-        issuedVouchers.push(voucher);
-      }
-
-      // Save order
-      allOrders.push(currentOrder);
-      saveData();
-
-      // Clear cart
-      cart = [];
-      updateCartCount();
-
-      // Close payment modal
-      closeModal('qrisModal');
-      closeModal('transferModal');
-
-      // Show success
-      showSuccessModal(currentOrder, issuedVouchers);
-    }
-
-    function generateVoucherCode() {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let code = 'TEFA';
-      for (let i = 0; i < 8; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return code;
-    }
-
-    // ====== SUCCESS MODAL ======
-    function showSuccessModal(order, vouchers) {
-      document.getElementById('successName').textContent = order.buyerName;
-      document.getElementById('successPhone').textContent = order.buyerPhone;
-      document.getElementById('successAmount').textContent = currency(order.totalPrice);
-      
-      const voucherList = vouchers.map(v => v.code).join('\n');
-      document.getElementById('successVouchers').textContent = voucherList;
-
-      openModal('successModal');
-    }
-
-    function closeSuccess() {
-      closeModal('successModal');
-      currentOrder = null;
-      document.getElementById('msgBox').innerHTML = `
-        <div class="alert alert-success">
-          ✅ <strong>Pembayaran berhasil!</strong> Kode voucher telah dikirim ke WhatsApp Anda. Terima kasih telah berbelanja di TEFA TKJ SMK Jaya Buana.
-        </div>
-      `;
-      setTimeout(() => { document.getElementById('msgBox').innerHTML = ''; }, 5000);
-    }
-
-    // ====== PRODUCTS ======
-    function initProducts() {
+    function initProducts(){
       products = [
-        { _id: '1', name: 'Paket 1 Jam', duration: '⏱️ 1 jam akses penuh', price: 5000, description: 'Akses internet premium 1 jam untuk belajar' },
-        { _id: '2', name: 'Paket 24 Jam', duration: '📅 24 jam akses penuh', price: 15000, description: 'Akses internet premium seharian penuh' },
-        { _id: '3', name: 'Paket 7 Hari', duration: '📆 7 hari akses', price: 80000, description: 'Akses internet premium selama 1 minggu' },
-        { _id: '4', name: 'Paket 30 Hari', duration: '📊 30 hari akses', price: 300000, description: 'Akses internet premium sebulan penuh' }
-      ];
-      renderProducts();
-    }
+        {_id:'1',name:'jaya buana',duration:'Aktif 12 jam',price:2000,description:'Paket hemat akses 12 jam.'},
+        {_id:'2',name:'wifi jaya buana',duration:'Aktif 12 jam',price:2000,description:'Akses 12 jam untuk kebutuhan cepat.'},
+        {_id:'3',name:'jaya buana',duration:'Aktif 4 hari',price:2000,description:'Paket ekonomis untuk penggunaan harian.'},
+        {_id:'4',name:'wifi jaya buana',duration:'Aktif 4 hari',price:5000,description:'Paket 4 hari dengan koneksi stabil.'},
+        {_id:'5',name:'jaya buana',duration:'Aktif 7 hari',price:8000,description:'Ideal untuk penggunaan mingguan.'},
+        {_id:'6',name:'wifi jaya buana',duration:'Aktif 7 hari',price:8000,description:'Akses 7 hari untuk aktivitas online.'}
 
-    function renderProducts() {
+      ];
       const list = document.getElementById('productList');
       list.innerHTML = '';
-
-      products.forEach(p => {
+      products.forEach(item => {
         const el = document.createElement('div');
-        el.className = 'product';
+        el.className = 'product card';
         el.innerHTML = `
           <div>
-            <div class="product-name">${p.name}</div>
-            <div class="product-desc">${p.description}</div>
-            <span class="product-quota">${p.duration}</span>
+            <div class="badge">${item.duration}</div>
+            <h3>${item.name}</h3>
+            <p style="color:var(--muted)">${item.description}</p>
           </div>
           <div>
-            <div class="price">${currency(p.price)}</div>
-            <button onclick="addToCart('${p._id}')">➕ Pilih Produk</button>
+            <div class="price">${currency(item.price)}</div>
+            <button class="btn-primary" style="width:100%" onclick="addToCart('${item._id}')">➕ Tambah</button>
           </div>
         `;
         list.appendChild(el);
       });
     }
 
-    // ====== HISTORY ======
-    function showUserHistory() {
-      document.getElementById('historyPhone').value = '';
-      document.getElementById('historyItems').innerHTML = '<div class="empty">Masukkan nomor WA untuk melihat riwayat</div>';
-      openModal('historyModal');
+    function addToCart(id){
+      const product = products.find(p => p._id === id);
+      if(!product) return;
+      const existing = cart.find(item => item._id === id);
+      existing ? existing.qty++ : cart.push({...product, qty:1});
+      saveState();
+      updateCartCount();
+      openCart();
     }
-
-    function loadUserHistory() {
-      const phone = document.getElementById('historyPhone').value.trim();
-      if (!phone) {
-        showMsg('Isi nomor WhatsApp dulu', 'info');
-        return;
-      }
-
-      const userOrders = allOrders.filter(o => o.buyerPhone === phone);
-      const historyItems = document.getElementById('historyItems');
-      historyItems.innerHTML = '';
-
-      if (userOrders.length === 0) {
-        historyItems.innerHTML = '<div class="empty">Belum ada riwayat pembelian</div>';
-        return;
-      }
-
-      let html = '<table><thead><tr><th>Tanggal</th><th>Total</th><th>Status</th><th>Voucher</th></tr></thead><tbody>';
-
-      userOrders.forEach(order => {
-        const date = new Date(order.createdAt).toLocaleDateString('id-ID');
-        const statusClass = {
-          paid: 'status-paid',
-          pending: 'status-pending',
-          pending_confirmation: 'status-warning'
-        }[order.status] || '';
-
+    function updateCartCount(){
+      const total = cart.reduce((sum,item)=>sum+item.qty,0);
+      document.getElementById('cartCount').textContent = `(${total})`;
+    }
+    function renderCart(){
+      const wrap = document.getElementById('cartItems');
+      if(!wrap) return;
+      if(!cart.length){wrap.innerHTML = '<div class="empty">Keranjang kosong.</div>';return;}
+      let total = 0;
+      let html = '<table><thead><tr><th>Paket</th><th>Qty</th><th>Subtotal</th><th></th></tr></thead><tbody>';
+      cart.forEach(item=>{
+        total += item.price * item.qty;
         html += `<tr>
-          <td>${date}</td>
-          <td>${currency(order.totalPrice)}</td>
-          <td><span class="status ${statusClass}">${order.status === 'pending_confirmation' ? 'Menunggu Konfirmasi' : order.status}</span></td>
-          <td>${order.voucherIssued.length} kode</td>
+          <td><strong>${item.name}</strong><div style="color:var(--muted);font-size:12px">${item.duration}</div></td>
+          <td style="display:flex;align-items:center;gap:6px">
+            <button class="btn-secondary" style="padding:4px 10px" onclick="changeQty('${item._id}',-1)">-</button>
+            ${item.qty}
+            <button class="btn-secondary" style="padding:4px 10px" onclick="changeQty('${item._id}',1)">+</button>
+          </td>
+          <td>${currency(item.price*item.qty)}</td>
+          <td><button class="btn-danger" style="padding:4px 10px" onclick="removeItem('${item._id}')">Hapus</button></td>
         </tr>`;
       });
-
       html += '</tbody></table>';
-      historyItems.innerHTML = html;
+      html += `<div style="text-align:right;margin-top:12px;font-weight:700">Total: ${currency(total)}</div>`;
+      wrap.innerHTML = html;
+    }
+    function changeQty(id, delta){
+      const item = cart.find(i=>i._id===id);
+      if(!item) return;
+      item.qty += delta;
+      if(item.qty<=0) cart = cart.filter(i=>i._id!==id);
+      saveState();
+      renderCart();
+      updateCartCount();
+    }
+    function removeItem(id){
+      cart = cart.filter(i=>i._id!==id);
+      saveState();
+      renderCart();
+      updateCartCount();
+    }
+    const openCart = () => { renderCart(); openModal('cartModal'); };
+
+    function goToCheckout(){
+      if(!cart.length){alert('Keranjang kosong');return;}
+      const totalQty = cart.reduce((s,i)=>s+i.qty,0);
+      const totalPrice = cart.reduce((s,i)=>s+i.qty*i.price,0);
+      document.getElementById('totalQty').textContent = totalQty;
+      document.getElementById('checkoutSummary').textContent = currency(totalPrice);
+      closeModal('cartModal');
+      openModal('checkoutModal');
     }
 
-    // ====== MENU ======
-    function toggleUserMenu() {
-      alert('Fitur login akan datang. Untuk sekarang, gunakan nomor WhatsApp untuk tracking pembelian.');
+    const createOrder = base => {
+      const totalQty = cart.reduce((s,i)=>s+i.qty,0);
+      const totalPrice = cart.reduce((s,i)=>s+i.qty*i.price,0);
+      return {
+        _id:'order_'+Date.now(),
+        buyerName:base.name || 'Pembeli',
+        buyerPhone:base.phone,
+        items:cart.map(c=>({packageId:c._id,name:c.name,price:c.price,qty:c.qty})),
+        totalPrice,
+        totalQty,
+        status:'pending',
+        voucherIssued:[],
+        createdAt:new Date().toISOString(),
+        paymentMethod:'pending'
+      };
+    };
+
+    function validateBuyer(){
+      const phone = document.getElementById('buyerPhone').value.trim();
+      if(!/^08[0-9]{8,}$/.test(phone)){alert('Nomor WhatsApp tidak valid.');return null;}
+      const name = document.getElementById('buyerName').value.trim();
+      return {phone,name};
     }
 
-    // ====== INIT ======
-    document.getElementById('year').innerText = new Date().getFullYear();
-    loadData();
-    initProducts();
-    updateCartCount();
+    function goToPaymentMethod(){
+      const buyer = validateBuyer();
+      if(!buyer) return;
+      currentOrder = createOrder(buyer);
+    }
+
+    function goToQRIS(){
+      const buyer = validateBuyer();
+      if(!buyer) return;
+      currentOrder = createOrder(buyer);
+      document.getElementById('qrcode').innerHTML = '';
+      new QRCode(document.getElementById('qrcode'),{
+        text:`QRIS-${currentOrder._id}-${currentOrder.totalPrice}`,
+        width:220,height:220,colorDark:'#0b5ed7',colorLight:'#fff'
+      });
+      document.getElementById('qrisAmount').textContent = currency(currentOrder.totalPrice);
+      startQRISTimer();
+      closeModal('checkoutModal');
+      openModal('qrisModal');
+    }
+
+    function startQRISTimer(){
+      if(qrisTimer) clearInterval(qrisTimer);
+      let remaining = 15*60;
+      const timerEl = document.getElementById('qrisTimer');
+      qrisTimer = setInterval(()=>{
+        const m=String(Math.floor(remaining/60)).padStart(2,'0');
+        const s=String(remaining%60).padStart(2,'0');
+        timerEl.textContent = `⏰ ${m}:${s}`;
+        if(remaining<=0){
+          clearInterval(qrisTimer);
+          cancelQRIS();
+          alert('QRIS kadaluarsa. Silakan buat order baru.');
+        }
+        remaining--;
+      },1000);
+    }
+    function confirmQRISPayment(){
+      if(!currentOrder) return;
+      if(qrisTimer) clearInterval(qrisTimer);
+      processPayment('qris','paid');
+    }
+    function cancelQRIS(){
+      if(qrisTimer) clearInterval(qrisTimer);
+      closeModal('qrisModal');
+      currentOrder = null;
+    }
+
+    function goToTransfer(){
+      const buyer = validateBuyer();
+      if(!buyer) return;
+      currentOrder = createOrder(buyer);
+      document.getElementById('transferAmount').textContent = currency(currentOrder.totalPrice);
+      closeModal('checkoutModal');
+      openModal('transferModal');
+    }
+    function confirmTransferPayment(){
+      if(!currentOrder) return;
+      processPayment('transfer','pending_confirmation');
+    }
+    function cancelTransfer(){
+      closeModal('transferModal');
+      currentOrder = null;
+    }
+
+    function generateVoucherCode(){
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = 'TKJ-';
+      for(let i=0;i<8;i++) code += chars[Math.floor(Math.random()*chars.length)];
+      return code.match(/.{1,4}/g).join('-');
+    }
+
+    function processPayment(method,status){
+      currentOrder.paymentMethod = method;
+      currentOrder.status = status==='pending_confirmation' ? 'pending_confirmation' : 'paid';
+      const issued = [];
+      for(let i=0;i<currentOrder.totalQty;i++){
+        const voucher = {
+          _id:'voucher_'+Date.now()+'_'+i,
+          code:generateVoucherCode(),
+          package:currentOrder.items[0]?.name || 'Paket Umum',
+          status:'used',
+          owner:currentOrder.buyerPhone,
+          issuedAt:new Date().toISOString()
+        };
+        allVouchers.push(voucher);
+        issued.push(voucher.code);
+      }
+      currentOrder.voucherIssued = issued;
+      allOrders.push(currentOrder);
+      saveState();
+      cart = [];
+      updateCartCount();
+      renderCart();
+      renderHistorySection(localStorage.getItem(LAST_PHONE_KEY)||'');
+      if(method==='transfer' && status==='pending_confirmation'){
+        alert('Terima kasih! Admin akan memverifikasi transfer Anda.');
+        closeModal('transferModal');
+      } else {
+        closeModal('qrisModal');
+        showSuccess(currentOrder);
+      }
+      currentOrder = null;
+    }
+
+    function showSuccess(order){
+      document.getElementById('successSummary').innerHTML =
+        `Nama: <strong>${order.buyerName}</strong><br>No WA: <strong>${order.buyerPhone}</strong><br>Total: <strong>${currency(order.totalPrice)}</strong>`;
+      document.getElementById('successVouchers').textContent = order.voucherIssued.join('\n');
+      openModal('successModal');
+    }
+    const closeSuccess = () => closeModal('successModal');
+
+    function renderHistorySection(phone){
+      const container = document.getElementById('historyResult');
+      if(!phone){
+        container.innerHTML = '<div class="empty">Masukkan nomor WhatsApp untuk menampilkan riwayat.</div>';
+        return;
+      }
+      const orders = allOrders.filter(o=>o.buyerPhone===phone);
+      if(!orders.length){
+        container.innerHTML = '<div class="empty">Belum ada transaksi dengan nomor tersebut.</div>';
+        return;
+      }
+      let html = '<table><thead><tr><th>Tanggal</th><th>Total</th><th>Status</th><th>Voucher</th></tr></thead><tbody>';
+      orders.forEach(order=>{
+        const statusClass = order.status==='paid' ? 'status status-paid'
+          : order.status==='pending_confirmation' ? 'status status-pending'
+          : 'status status-failed';
+        html += `<tr>
+          <td>${new Date(order.createdAt).toLocaleString('id-ID')}</td>
+          <td>${currency(order.totalPrice)}</td>
+          <td><span class="${statusClass}">${order.status}</span></td>
+          <td>${order.voucherIssued.join('<br>')}</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+    function resetHistory(){
+      document.getElementById('historyInput').value = '';
+      localStorage.removeItem(LAST_PHONE_KEY);
+      renderHistorySection('');
+    }
+
+
+    document.getElementById('historyForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const phone = document.getElementById('historyInput').value.trim();
+      if(!/^08[0-9]{8,}$/.test(phone)){alert('Nomor WA tidak valid.');return;}
+      localStorage.setItem(LAST_PHONE_KEY,phone);
+      renderHistorySection(phone);
+    });
+
+    function initTheme(){
+      const saved = localStorage.getItem(THEME_KEY) || 'light';
+      document.body.setAttribute('data-theme',saved);
+      document.getElementById('themeToggle').textContent = saved==='light' ? '🌙 Mode Gelap' : '☀️ Mode Terang';
+    }
+    document.getElementById('themeToggle').addEventListener('click',()=>{
+      const current = document.body.getAttribute('data-theme');
+      const next = current==='light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme',next);
+      localStorage.setItem(THEME_KEY,next);
+      document.getElementById('themeToggle').textContent = next==='light' ? '🌙 Mode Gelap' : '☀️ Mode Terang';
+    });
+
+    function init(){
+      loadState();
+      initProducts();
+      updateCartCount();
+      renderCart();
+      const lastPhone = localStorage.getItem(LAST_PHONE_KEY);
+      if(lastPhone){
+        document.getElementById('historyInput').value = lastPhone;
+        renderHistorySection(lastPhone);
+      }
+      initTheme();
+      document.getElementById('year').textContent = new Date().getFullYear();
+    }
+
+    window.addEventListener('load',init);
   </script>
 </body>
 </html>
+
