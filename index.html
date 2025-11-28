@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TEFA TKJ SMK Jaya Buana</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/LogoTKJ.png">
+  <style>
+    :root{--primary:#0b5ed7;--accent:#f59e0b;--muted:#6b7280;font-family:Inter,system-ui,Arial,sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;color:#111;background:#f8fafc}
+    header{background:white;box-shadow:0 2px 6px rgba(10,10,10,0.04);position:sticky;top:0;z-index:40}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
+    .nav{display:flex;align-items:center;gap:16px}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo img{width:48px;height:48px;border-radius:8px}
+    nav{margin-left:auto}
+    nav a{margin-left:12px;text-decoration:none;color:var(--muted)}
+    .hero{display:flex;gap:24px;align-items:center;padding:40px 0}
+    .hero-left h1{margin:0;font-size:28px}
+    .ctabtn{display:inline-block;background:var(--primary);color:white;padding:12px 18px;border-radius:8px;text-decoration:none}
+    .features{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+    .card{background:white;border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(12,12,12,0.06)}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:20px}
+    .product .price{font-weight:700;margin-top:10px}
+    .footer{margin-top:40px;padding:24px 0;color:var(--muted)}
+    /* cart & checkout */
+    .cartbtn{position:fixed;right:18px;bottom:18px;background:var(--accent);color:white;padding:12px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,0.15);z-index:60}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal.open{display:flex}
+    .modal .panel{background:white;border-radius:10px;max-width:700px;width:100%;padding:20px}
+    /* admin */
+    .admin-grid{display:grid;grid-template-columns:1fr;gap:12px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border-bottom:1px solid #eee;text-align:left}
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;font-size:12px}
+    .used{background:#e6ffed;color:#027a3a}
+    .unused{background:#fff8e6;color:#b45309}
+    /* tombol qty */
+    .qty-btn{padding:4px 8px;border:1px solid #ddd;background:#fff;border-radius:6px;cursor:pointer}
+    .qty-number{display:inline-block;padding:0 8px;min-width:24px;text-align:center}
+    /* responsive */
+    @media (max-width:700px){.hero{flex-direction:column;align-items:flex-start}.nav a{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <img src="images/LogoTKJ.png" alt="Logo">
+        <div>
+          <div style="font-weight:700">SMK Jaya Buana</div>
+          <div style="font-size:12px;color:var(--muted)">Teaching Factory - TKJ</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#home">Beranda</a>
+        <a href="#vouchers">Pilihan Voucher</a>
+        <a href="#how">Cara Pembelian</a>
+        <a href="#contact">Hubungi Kami</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="home" class="hero">
+      <div class="hero-left">
+        <h1>Akses Internet Cepat &amp; Stabil!<br/></h1>
+        <p style="color:var(--muted)">Voucher praktis untuk belajar, tugas, dan hiburan — paket pelajar dengan harga terjangkau dan dukungan teknis dari praktik TKJ.</p>
+        <div style="margin-top:14px">
+          <a class="ctabtn" href="#vouchers" onclick="scrollToSection('vouchers')">Beli Voucher Sekarang</a>
+        </div>
+        <div class="features">
+          <div class="card">Jaringan Handal</div>
+          <div class="card">Harga Pelajar</div>
+          <div class="card">Aktivasi Cepat</div>
+          <div class="card">Dukungan Praktik TKJ</div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="text-align:center">
+          <img src="images/rohmad.jpeg" style="width:100%;height:auto;border-radius:8px;object-fit:cover" alt="praktek">
+          <div style="margin-top:10px;color:var(--muted);font-size:13px">Proses praktek siswa: pembuatan voucher & konfigurasi hotspot</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vouchers">
+      <h2>Pilihan Voucher</h2>
+      <p style="color:var(--muted)">Pilih paket sesuai kebutuhan belajar dan kegiatanmu.</p>
+      <div class="products" id="productList"></div>
+    </section>
+
+    <section id="how" style="margin-top:30px">
+      <h2>Cara Pembelian</h2>
+      <ol style="color:var(--muted)">
+        <li>Pilih paket dan klik Beli.</li>
+        <li>Masukkan nama &amp; nomor/Email untuk pengiriman kode.</li>
+        <li>Pilih QRIS lalu pindai untuk membayar.</li>
+        <li>Setelah pembayaran terkonfirmasi, kode voucher akan dikirim otomatis via WhatsApp / Email.</li>
+      </ol>
+    </section>
+
+    <section id="contact" style="margin-top:20px">
+      <h2>Hubungi Kami / Bantuan</h2>
+      <p style="color:var(--muted)">Butuh bantuan? Chat via WhatsApp: <a id="waContact" href="#">0822-1472-7114</a></p>
+    </section>
+
+    <section id="faq" style="margin-top:26px">
+      <h2>FAQ Singkat</h2>
+      <div style="color:var(--muted)">
+        <strong>Q:</strong> Berapa lama voucher aktif?<br>
+        <strong>A:</strong> Tergantung paket. Misal Paket 1 Jam, Paket Harian, Paket Bulanan.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Cart Button -->
+  <button class="cartbtn" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal" onclick="if(event.target===this)closeModal('cartModal')">
+    <div class="panel">
+      <h3>Keranjang</h3>
+      <div id="cartItems"></div>
+      <div style="margin-top:12px;text-align:right">
+        <button onclick="closeModal('cartModal')">Tutup</button>
+        <button style="margin-left:8px" onclick="goToCheckout()">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="modal" onclick="if(event.target===this)closeModal('checkoutModal')">
+    <div class="panel">
+      <h3>Checkout</h3>
+      <form id="checkoutForm" onsubmit="event.preventDefault();startPayment()">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <label style="flex:1">
+            Nama (opsional)
+            <input type="text" id="buyerName" style="width:100%;padding:8px;margin-top:6px" />
+          </label>
+          <label style="flex:1">
+            Nomor HP / WhatsApp (wajib)
+            <input type="text" id="buyerPhone" required style="width:100%;padding:8px;margin-top:6px" />
+          <!-- </label>
+          <label style="flex:1">
+            Email (opsional)
+            <input type="email" id="buyerEmail" style="width:100%;padding:8px;margin-top:6px" />
+          </label> -->
+        </div>
+        <div style="margin-top:12px">
+          <div style="color:var(--muted)" id="checkoutSummary"></div>
+        </div>
+        <div style="margin-top:12px">
+          <strong>Pilih Pembayaran:</strong>
+          <div style="margin-top:8px">
+            <button type="button" onclick="showQRIS()">Bayar pakai QRIS</button>
+            <button type="button" onclick="manualPayment()" style="margin-left:8px">Transfer Manual</button>
+          </div>
+        </div>
+        <div style="margin-top:12px;text-align:right">
+          <button type="button" onclick="closeModal('checkoutModal')">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- QRIS Modal -->
+  <div id="qrisModal" class="modal" onclick="if(event.target===this)closeModal('qrisModal')">
+    <div class="panel" style="text-align:center">
+      <h3>Scan untuk Bayar - QRIS</h3>
+      <p style="color:var(--muted)">Scan QR menggunakan mobile banking / e-wallet.</p>
+      <div style="margin:12px 0">
+        <img id="qrisImage" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=SMKJAYABUANA-QRIS" alt="qris">
+      </div>
+      <div style="margin-top:8px">
+        <button onclick="simulatePaymentSuccess()">Saya sudah bayar</button>
+        <button onclick="closeModal('qrisModal')" style="margin-left:8px">Batal</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    // Sample product data
+    const products = [
+      {id:1,name:'Paket Belajar 1 Jam',desc:'Durasi 1 jam - cocok untuk sesi intensif',quota:'1 jam',price:2000},
+      {id:2,name:'Paket Nugas Seharian',desc:'Aktif sepanjang hari - 24 jam akses',quota:'24 jam',price:5000},
+      {id:3,name:'Paket Monthly Super',desc:'Kuota bulanan untuk pelajar',quota:'30 hari',price:40000},
+      {id:4,name:'Paket Sore Pelajar',desc:'Paket murah khusus sore hari',quota:'4 jam',price:3000}
+    ];
+
+    const cart = [];
+    const vouchers = []; // for admin mock
+
+    function currency(n){return 'Rp ' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+
+    // render products
+    const productList = document.getElementById('productList');
+    products.forEach(p=>{
+      const el = document.createElement('div'); el.className='card product';
+      el.innerHTML = `<h3>${p.name}</h3><div style="color:var(--muted)">${p.desc}</div><div class="price">${currency(p.price)}</div><div style="margin-top:10px"><button onclick="addToCart(${p.id})">Pilih / Beli</button></div>`;
+      productList.appendChild(el);
+    });
+
+    function addToCart(id){
+      const p = products.find(x=>x.id===id);
+      const item = cart.find(x=>x.id===id);
+      if(item) item.qty++;
+      else cart.push({id:p.id,name:p.name,price:p.price,qty:1});
+      updateCartCount();
+      openCart();
+    }
+
+    function updateCartCount(){document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+i.qty,0)}
+
+    function openCart(){
+      renderCartItems();
+      document.getElementById('cartModal').classList.add('open');
+    }
+    function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+    // ----------------------------
+    // Render cart items (dengan tombol + / - / Hapus)
+    // ----------------------------
+    function renderCartItems(){
+      const wrap = document.getElementById('cartItems'); wrap.innerHTML='';
+      if(cart.length===0){wrap.innerHTML='<div style="color:var(--muted)">Keranjang kosong</div>';return}
+      const table = document.createElement('table');
+      let html = '<thead><tr><th>Produk</th><th>Qty</th><th>Subtotal</th><th>Aksi</th></tr></thead><tbody>';
+      cart.forEach(it=>{
+        html+=`<tr>
+          <td>${it.name}</td>
+          <td>
+            <button class="qty-btn" onclick="decreaseOne(${it.id})">-</button>
+            <span class="qty-number">${it.qty}</span>
+            <button class="qty-btn" onclick="increaseOne(${it.id})">+</button>
+          </td>
+          <td>${currency(it.price*it.qty)}</td>
+          <td><button onclick="removeItem(${it.id})" style="color:red">Hapus</button></td>
+        </tr>`;
+      });
+      html+='</tbody>';
+      table.innerHTML = html; wrap.appendChild(table);
+    }
+
+    // + : tambah 1 qty
+    function increaseOne(id){
+      const item = cart.find(x=>x.id===id);
+      if(item){ item.qty++; updateCartCount(); renderCartItems(); }
+    }
+
+    // - : kurang 1 qty
+    function decreaseOne(id){
+      const item = cart.find(x=>x.id===id);
+      if(!item) return;
+      item.qty--;
+      if(item.qty <= 0){
+        // hapus dari array
+        const idx = cart.findIndex(x=>x.id===id);
+        if(idx > -1) cart.splice(idx,1);
+      }
+      updateCartCount();
+      renderCartItems();
+    }
+
+    // hapus langsung
+    function removeItem(id){
+      const idx = cart.findIndex(x=>x.id===id);
+      if(idx > -1) cart.splice(idx,1);
+      updateCartCount();
+      renderCartItems();
+    }
+
+    // sebelumnya ada fungsi removeOne - untuk kompatibilitas, panggil decreaseOne
+    function removeOne(id){ decreaseOne(id); }
+
+    function goToCheckout(){
+      if(cart.length===0){alert('Keranjang kosong');return}
+      // summary
+      const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+      document.getElementById('checkoutSummary').innerText = 'Total: ' + currency(total);
+      document.getElementById('checkoutModal').classList.add('open');
+    }
+
+    function showQRIS(){
+      // In a real implementation: call backend to create payment request and return QR code image
+      document.getElementById('qrisImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=SMKJAYABUANA-ORDER-'+Date.now();
+      document.getElementById('qrisModal').classList.add('open');
+    }
+
+    function manualPayment(){
+      alert('Silakan transfer ke rekening: 123456789 a/n Rohmad Kuswindarto. Setelah transfer, klik Konfirmasi.');
+    }
+
+    // Simulate payment success -> generate vouchers and send
+    function simulatePaymentSuccess(){
+      closeModal('qrisModal'); closeModal('checkoutModal'); closeModal('cartModal');
+      const buyer = {name:document.getElementById('buyerName').value||'Pembeli', phone:document.getElementById('buyerPhone').value, email:document.getElementById('buyerEmail') ? document.getElementById('buyerEmail').value : ''};
+      const items = JSON.parse(JSON.stringify(cart));
+      const created = [];
+      items.forEach(it=>{
+        for(let i=0;i<it.qty;i++){
+          const code = generateVoucherCode(it.name);
+          const v = {code,package:it.name,used:false,owner:buyer.phone,created: new Date().toLocaleString()};
+          vouchers.unshift(v); created.push(v);
+        }
+      });
+      // clear cart
+      cart.length=0; updateCartCount();
+      // send to user (simulate)
+      showSuccessAndSend(created,buyer);
+      renderAdmin();
+    }
+
+    function generateVoucherCode(pkg){
+      const rnd = Math.random().toString(36).substring(2,8).toUpperCase();
+      return pkg.split(' ').map(w=>w[0]||'').join('').toUpperCase() + '-' + rnd;
+    }
+
+    function showSuccessAndSend(created,buyer){
+      const codesText = created.map(v=>v.code+' ('+v.package+')').join('\n');
+      const msg = `Terima kasih. Kode voucher Anda:\n${codesText}`;
+      alert('Pembayaran berhasil. Kode voucher telah dibuat. Kunjungi Admin untuk melihat daftar.');
+      // open WA link
+      const wa = `https://wa.me/${buyer.phone.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(msg)}`;
+      // mailto
+      const mailto = `mailto:${buyer.email}?subject=${encodeURIComponent('Kode Voucher Anda')}&body=${encodeURIComponent(msg)}`;
+      // offer both links
+      if(confirm('Kirim kode lewat WhatsApp? (OK = WhatsApp, Cancel = Email jika tersedia)')){
+        window.open(wa,'_blank');
+      } else if(buyer.email){ window.open(mailto,'_blank'); }
+    }
+
+    function scrollToSection(id){document.querySelector('#'+id).scrollIntoView({behavior:'smooth'})}
+
+    // Checkout form handler
+    function startPayment(){
+      // Basic validation
+      const phone = document.getElementById('buyerPhone').value.trim(); if(!phone){alert('Isi nomor WA/HP');return}
+      showQRIS();
+    }
+
+    // admin functions
+    function renderAdmin(){
+      const tbody = document.querySelector('#voucherTable tbody'); tbody.innerHTML='';
+      if(vouchers.length===0){document.getElementById('salesSummary').innerText='Belum ada transaksi';return}
+      document.getElementById('salesSummary').innerText = vouchers.length + ' voucher terbit (termasuk yang dipakai/tersisa)';
+      vouchers.forEach((v,i)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${v.code}</td><td>${v.package}</td><td>${v.owner}</td><td><span class="badge ${v.used? 'used':'unused'}">${v.used? 'Dipakai':'Belum dipakai'}</span></td><td><button onclick="toggleUsed(${i})">Tandai ${v.used? 'Belum':'Dipakai'}</button></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleUsed(i){vouchers[i].used = !vouchers[i].used; renderAdmin();}
+
+    // init
+    renderAdmin();
+  </script>
+
+ <footer style="
+    background:#ffffff;
+    color:#000000;
+    text-align:center;
+    padding:15px 0;
+    font-family:Arial, sans-serif;
+    font-size:14px;
+    border-top:1px solid #e5e5e5;
+">
+    © 2025 TEFA TKJ SMK Jaya Buana
+</footer>
+
+</body>
+</html>
